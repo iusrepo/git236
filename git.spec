@@ -89,11 +89,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
 
 Name:           git
-Version:        2.24.1
-Release:        2%{?rcrev}%{?dist}
+Version:        2.25.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1029,6 +1029,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Wed Dec 25 2019 Todd Zullinger <tmz@pobox.com> - 2.25.0-0.0.rc0
+- update to 2.25.0-rc0
+
 * Thu Dec 19 2019 Todd Zullinger <tmz@pobox.com> - 2.24.1-2
 - fix git-daemon systemd scriptlets (#1785088)
 

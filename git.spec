@@ -208,10 +208,10 @@ BuildRequires:  gnupg
 BuildRequires:  gnupg2-smime
 %endif
 # endif fedora or el > 8
-%if 0%{?fedora} || ( 0%{?rhel} && ( 0%{?rhel} == 6 || 0%{?rhel} >= 7 && %{_arch} != ppc64 ))
+%if 0%{?fedora} || 0%{?rhel} == 6 || ( 0%{?rhel} >= 7 && ( %{_arch} == ppc64le || %{_arch} == x86_64 ) )
 BuildRequires:  highlight
 %endif
-# endif fedora, el-6, or el7-ppc64
+# endif fedora, el-6, or el7+ (ppc64le/x86_64)
 BuildRequires:  httpd
 %if 0%{?fedora} && ! ( %{_arch} == i386 || %{_arch} == s390x )
 BuildRequires:  jgit
@@ -1031,6 +1031,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Fri Jan 03 2020 Todd Zullinger <tmz@pobox.com> - 2.25.0-0.1.rc1
 - update to 2.25.0-rc1
+- only add highlight test BR for ppc64le/x86_64 on EL7+
 
 * Wed Dec 25 2019 Todd Zullinger <tmz@pobox.com> - 2.25.0-0.0.rc0
 - update to 2.25.0-rc0

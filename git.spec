@@ -509,7 +509,8 @@ sed -i '/^git-p4/d' command-list.txt
 
 # Use these same options for every invocation of 'make'.
 # Otherwise it will rebuild in %%install due to flags changes.
-cat << \EOF > config.mak
+# Pipe to tee to aid confirmation/verification of settings.
+cat << \EOF | tee config.mak
 V = 1
 CFLAGS = %{build_cflags}
 LDFLAGS = %{build_ldflags}
@@ -536,9 +537,6 @@ DEFAULT_TEST_TARGET = prove
 GIT_PROVE_OPTS = --verbose --normalize %{?_smp_mflags} --formatter=TAP::Formatter::File
 GIT_TEST_OPTS = -x --verbose-log
 EOF
-
-# Print config.mak to aid confirmation/verification of settings
-cat config.mak
 
 # Filter bogus perl requires
 # packed-refs comes from a comment in contrib/hooks/update-paranoid

@@ -93,7 +93,7 @@
 
 Name:           git
 Version:        2.25.0
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -863,13 +863,13 @@ sed -i "s@\(GIT_TEST_OPTS='.*\)'@\1 --root=$testdir'@" GIT-BUILD-OPTIONS
 touch -r ts GIT-BUILD-OPTIONS
 
 # Run the tests
-make test || ./print-failed-test-output
+%make_build test || ./print-failed-test-output
 
 # Run contrib/credential/netrc tests
 mkdir -p contrib/credential
 mv netrc contrib/credential/
-make -C contrib/credential/netrc/ test || \
-make -C contrib/credential/netrc/ testverbose
+%make_build -C contrib/credential/netrc/ test || \
+%make_build -C contrib/credential/netrc/ testverbose
 
 # Clean up test dir
 rmdir --ignore-fail-on-non-empty "$testdir"
@@ -1027,6 +1027,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Jan 14 2020 Tom Stellard <tstellar@redhat.com> - 2.25.0-2
+- Use make_build macro when running tests
+
 * Tue Jan 14 2020 Todd Zullinger <tmz@pobox.com> - 2.25.0-1
 - update to 2.25.0
 

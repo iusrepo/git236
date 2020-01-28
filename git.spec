@@ -93,7 +93,7 @@
 
 Name:           git
 Version:        2.25.0
-Release:        2%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1027,6 +1027,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.25.0-2.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Tue Jan 14 2020 Tom Stellard <tstellar@redhat.com> - 2.25.0-2
 - Use make_build macro when running tests
 

@@ -43,19 +43,19 @@
 
 # Settings for Fedora and EL >= 7
 %if 0%{?fedora} || 0%{?rhel} >= 7
+%bcond_without              libsecret
 %global bashcomp_pkgconfig  1
 %global bashcompdir         %(pkg-config --variable=completionsdir bash-completion 2>/dev/null)
 %global bashcomproot        %(dirname %{bashcompdir} 2>/dev/null)
 %global emacs_filesystem    1
-%global libsecret           1
 %global use_new_rpm_filters 1
 %global use_systemd         1
 %else
+%bcond_with                 libsecret
 %global bashcomp_pkgconfig  0
 %global bashcompdir         %{_sysconfdir}/bash_completion.d
 %global bashcomproot        %{bashcompdir}
 %global emacs_filesystem    0
-%global libsecret           0
 %global use_new_rpm_filters 0
 %global use_systemd         0
 %{!?_pkgdocdir: %global _pkgdocdir %{_docdir}/%{name}-%{version}}
@@ -93,7 +93,7 @@
 
 Name:           git
 Version:        2.25.1
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -145,10 +145,6 @@ BuildRequires:  gcc
 BuildRequires:  gettext
 BuildRequires:  gnupg2
 BuildRequires:  libcurl-devel
-%if %{libsecret}
-BuildRequires:  libsecret-devel
-%endif
-# endif libsecret
 BuildRequires:  make
 BuildRequires:  openssl-devel
 BuildRequires:  pcre2-devel
@@ -290,6 +286,10 @@ tools for integrating with other SCMs, install the git-all meta-package.
 Summary:        Meta-package to pull in all git tools
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
+%if %{with libsecret}
+Requires:	git-credential-libsecret = %{version}-%{release}
+%endif
+# endif with libsecret
 %if %{with cvs}
 Requires:       git-cvs = %{version}-%{release}
 %endif
@@ -341,6 +341,16 @@ BuildArch:      noarch
 Requires:       git-core = %{version}-%{release}
 %description core-doc
 Documentation files for git-core package including man pages.
+
+%if %{with libsecret}
+%package credential-libsecret
+Summary:        Git helper for accessing credentials via libsecret
+BuildRequires:  libsecret-devel
+Requires:       git = %{version}-%{release}
+%description credential-libsecret
+%{summary}.
+%endif
+# endif with libsecret
 
 %if %{with cvs}
 %package cvs
@@ -581,10 +591,10 @@ export SOURCE_DATE_EPOCH=$(date -r version +%%s 2>/dev/null)
 
 %make_build -C contrib/contacts/ all
 
-%if %{libsecret}
+%if %{with libsecret}
 %make_build -C contrib/credential/libsecret/
 %endif
-# endif libsecret
+# endif with libsecret
 
 %make_build -C contrib/diff-highlight/
 
@@ -631,11 +641,11 @@ for el in *.el ; do
 done
 popd >/dev/null
 
-%if %{libsecret}
+%if %{with libsecret}
 install -pm 755 contrib/credential/libsecret/git-credential-libsecret \
     %{buildroot}%{gitexecdir}
 %endif
-# endif libsecret
+# endif with libsecret
 install -pm 755 contrib/credential/netrc/git-credential-netrc \
     %{buildroot}%{gitexecdir}
 # temporarily move contrib/credential/netrc aside to prevent it from being
@@ -677,7 +687,7 @@ rm -f %{buildroot}%{gitexecdir}/mergetools/p4merge
 # Remove unneeded git-remote-testsvn so git-svn can be noarch
 rm -f %{buildroot}%{gitexecdir}/git-remote-testsvn
 
-exclude_re="archimport|email|git-(citool|cvs|daemon|gui|instaweb|p4|subtree|svn)|gitk|gitweb|p4merge"
+exclude_re="archimport|email|git-(citool|credential-libsecret|cvs|daemon|gui|instaweb|p4|subtree|svn)|gitk|gitweb|p4merge"
 (find %{buildroot}{%{_bindir},%{_libexecdir}} -type f -o -type l | grep -vE "$exclude_re" | sed -e s@^%{buildroot}@@) > bin-man-doc-files
 (find %{buildroot}{%{_bindir},%{_libexecdir}} -mindepth 1 -type d | grep -vE "$exclude_re" | sed -e 's@^%{buildroot}@%dir @') >> bin-man-doc-files
 (find %{buildroot}%{perl_vendorlib} -type f | sed -e s@^%{buildroot}@@) > perl-git-files
@@ -755,7 +765,7 @@ chmod a-x Documentation/technical/api-index.sh
 find contrib -type f -print0 | xargs -r0 chmod -x
 
 # Split core files
-not_core_re="git-(add--interactive|contacts|credential-(libsecret|netrc)|difftool|filter-branch|instaweb|request-pull|send-mail)|gitweb"
+not_core_re="git-(add--interactive|contacts|credential-netrc|difftool|filter-branch|instaweb|request-pull|send-mail)|gitweb"
 grep -vE "$not_core_re|%{_mandir}" bin-man-doc-files > bin-files-core
 touch man-doc-files-core
 %if %{with docs}
@@ -926,6 +936,13 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 # endif rhel <= 7
 %{_pkgdocdir}/contrib/hooks
 
+%if %{with libsecret}
+%files credential-libsecret
+%defattr(-,root,root)
+%{gitexecdir}/git-credential-libsecret
+%endif
+# endif with libsecret
+
 %if %{with cvs}
 %files cvs
 %{_pkgdocdir}/*git-cvs*.txt
@@ -1027,6 +1044,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Wed Feb 19 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-2
+- split libsecret credential helper into a subpackage (#1804741)
+
 * Mon Feb 17 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-1
 - update to 2.25.1
 

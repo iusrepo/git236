@@ -251,12 +251,6 @@ Obsoletes:      git-cvs < %{?epoch:%{epoch}:}%{version}-%{release}
 %endif
 # endif without cvs
 
-# Obsolete gnome-keyring credential helper (remove after Fedora 29)
-%if 0%{?fedora} && 0%{?fedora} < 30
-Obsoletes:      git-gnome-keyring < 2.11.1-4
-%endif
-# endif fedora < 30
-
 # Obsolete git-p4 if it's disabled
 %if %{without p4}
 Obsoletes:      git-p4 < %{?epoch:%{epoch}:}%{version}-%{release}
@@ -1037,6 +1031,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 * Wed Feb 19 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-2
 - split libsecret credential helper into a subpackage (#1804741)
 - consolidate macros for Fedora/EPEL
+- remove unneeded gnome-keyring obsoletes
 
 * Mon Feb 17 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-1
 - update to 2.25.1

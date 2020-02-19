@@ -14,28 +14,18 @@
 %bcond_with                 linkcheck
 %endif
 
-# Settings for Fedora > 29 and EL > 7
-%if 0%{?fedora} > 29 || 0%{?rhel} > 7
-%bcond_with                 python2
-%else
-%bcond_without              python2
-%endif
-
-# Settings for Fedora >= 29 and EL > 7
-%if 0%{?fedora} >= 29 || 0%{?rhel} > 7
-%global gitweb_httpd_conf   gitweb.conf
-%else
-%global gitweb_httpd_conf   git.conf
-%endif
-
 # Settings for Fedora and EL > 7
 %if 0%{?fedora} || 0%{?rhel} > 7
+%bcond_with                 python2
 %bcond_without              python3
+%global gitweb_httpd_conf   gitweb.conf
 %global use_glibc_langpacks 1
 %global use_perl_generators 1
 %global use_perl_interpreter 1
 %else
+%bcond_without              python2
 %bcond_with                 python3
+%global gitweb_httpd_conf   git.conf
 %global use_glibc_langpacks 0
 %global use_perl_generators 0
 %global use_perl_interpreter 0
@@ -1046,6 +1036,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Wed Feb 19 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-2
 - split libsecret credential helper into a subpackage (#1804741)
+- consolidate macros for Fedora/EPEL
 
 * Mon Feb 17 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-1
 - update to 2.25.1

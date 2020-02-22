@@ -83,7 +83,7 @@
 
 Name:           git
 Version:        2.25.1
-Release:        2%{?rcrev}%{?dist}
+Release:        3%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -500,6 +500,11 @@ sed -i '/^git-cvs/d' command-list.txt
 sed -i '/^git-p4/d' command-list.txt
 %endif
 # endif without p4
+
+# Work around issue on s390x with gcc10 (#1799408)
+%if 0%{?fedora} >= 32 && %{_arch} == s390x
+%global build_cflags %(echo %build_cflags | sed 's/-mtune=z13/-mtune=zEC12/')
+%endif
 
 # Use these same options for every invocation of 'make'.
 # Otherwise it will rebuild in %%install due to flags changes.
@@ -1028,6 +1033,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Feb 22 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-3
+- work around issue on s390x with gcc10 (#1799408)
+
 * Wed Feb 19 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-2
 - split libsecret credential helper into a subpackage (#1804741)
 - consolidate macros for Fedora/EPEL

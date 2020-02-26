@@ -8,9 +8,11 @@
 
 # Settings for Fedora
 %if 0%{?fedora}
+%bcond_without              asciidoctor
 # linkchecker is not available on EL
 %bcond_without              linkcheck
 %else
+%bcond_with                 asciidoctor
 %bcond_with                 linkcheck
 %endif
 
@@ -83,7 +85,7 @@
 
 Name:           git
 Version:        2.25.1
-Release:        3%{?rcrev}%{?dist}
+Release:        4%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -118,7 +120,13 @@ Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
 %if %{with docs}
 # pod2man is needed to build Git.3pm
 BuildRequires:  %{_bindir}/pod2man
+%if %{with asciidoctor}
+BuildRequires:  docbook5-style-xsl
+BuildRequires:  rubygem-asciidoctor
+%else
 BuildRequires:  asciidoc >= 8.4.1
+%endif
+# endif with asciidoctor
 BuildRequires:  xmlto
 %if %{with linkcheck}
 BuildRequires:  linkchecker
@@ -526,6 +534,10 @@ PYTHON_PATH = %{__python2}
 NO_PYTHON = 1
 %endif
 # endif with python2
+%if %{with asciidoctor}
+USE_ASCIIDOCTOR = 1
+%endif
+# endif with asciidoctor
 htmldir = %{?_pkgdocdir}%{!?_pkgdocdir:%{_docdir}/%{name}-%{version}}
 prefix = %{_prefix}
 perllibdir = %{perl_vendorlib}
@@ -1033,6 +1045,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Wed Feb 26 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-4
+- use Asciidoctor to build documentation when possible
+
 * Sat Feb 22 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-3
 - work around issue on s390x with gcc10 (#1799408)
 

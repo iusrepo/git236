@@ -81,11 +81,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
 
 Name:           git
-Version:        2.25.1
-Release:        4%{?rcrev}%{?dist}
+Version:        2.26.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -597,6 +597,8 @@ export SOURCE_DATE_EPOCH=$(date -r version +%%s 2>/dev/null)
 %endif
 # endif with libsecret
 
+%make_build -C contrib/credential/netrc/
+
 %make_build -C contrib/diff-highlight/
 
 %make_build -C contrib/subtree/ all
@@ -1045,6 +1047,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Mar 06 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.0.rc0
+- update to 2.26.0-rc0
+
 * Wed Feb 26 2020 Todd Zullinger <tmz@pobox.com> - 2.25.1-4
 - use Asciidoctor to build documentation when possible
 

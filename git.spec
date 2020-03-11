@@ -876,7 +876,7 @@ sed -i "s@\(GIT_TEST_OPTS='.*\)'@\1 --root=$testdir'@" GIT-BUILD-OPTIONS
 touch -r ts GIT-BUILD-OPTIONS
 
 # Run the tests
-%make_build test || ./print-failed-test-output
+%__make test || ./print-failed-test-output
 
 # Run contrib/credential/netrc tests
 mkdir -p contrib/credential
@@ -1049,6 +1049,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Tue Mar 10 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.1.rc1
 - update to 2.26.0-rc1
+- adjust make test options
 
 * Fri Mar 06 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.0.rc0
 - update to 2.26.0-rc0

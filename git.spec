@@ -135,6 +135,7 @@ BuildRequires:  linkchecker
 %endif
 # endif with docs
 BuildRequires:  desktop-file-utils
+BuildRequires:  diffutils
 BuildRequires:  emacs
 BuildRequires:  expat-devel
 BuildRequires:  findutils
@@ -147,6 +148,7 @@ BuildRequires:  make
 BuildRequires:  openssl-devel
 BuildRequires:  pcre2-devel
 BuildRequires:  perl(Error)
+BuildRequires:  perl(lib)
 BuildRequires:  perl(Test)
 %if %{use_perl_generators}
 BuildRequires:  perl-generators
@@ -218,12 +220,19 @@ BuildRequires:  perl(CGI::Carp)
 BuildRequires:  perl(CGI::Util)
 BuildRequires:  perl(DBD::SQLite)
 BuildRequires:  perl(Digest::MD5)
+BuildRequires:  perl(Fcntl)
+BuildRequires:  perl(File::Basename)
+BuildRequires:  perl(File::Copy)
+BuildRequires:  perl(File::Find)
+BuildRequires:  perl(filetest)
 BuildRequires:  perl(HTTP::Date)
 BuildRequires:  perl(IO::Pty)
 BuildRequires:  perl(JSON)
 BuildRequires:  perl(JSON::PP)
 BuildRequires:  perl(Mail::Address)
 BuildRequires:  perl(Memoize)
+BuildRequires:  perl(POSIX)
+BuildRequires:  perl(Term::ReadLine)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Time::HiRes)
 %if %{with python2}
@@ -236,7 +245,9 @@ BuildRequires:  python3-devel
 # endif with python3
 BuildRequires:  subversion
 BuildRequires:  subversion-perl
+BuildRequires:  tar
 BuildRequires:  time
+BuildRequires:  zip
 %endif
 # endif with tests
 
@@ -1050,6 +1061,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 * Tue Mar 10 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.1.rc1
 - update to 2.26.0-rc1
 - adjust make test options
+- add missing build deps for tests
 
 * Fri Mar 06 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.0.rc0
 - update to 2.26.0-rc0

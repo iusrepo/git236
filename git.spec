@@ -85,7 +85,7 @@
 
 Name:           git
 Version:        2.26.0
-Release:        0.1%{?rcrev}%{?dist}
+Release:        0.2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -519,11 +519,6 @@ sed -i '/^git-cvs/d' command-list.txt
 sed -i '/^git-p4/d' command-list.txt
 %endif
 # endif without p4
-
-# Work around issue on s390x with gcc10 (#1799408)
-%if 0%{?fedora} >= 32 && %{_arch} == s390x
-%global build_cflags %(echo %build_cflags | sed 's/-mtune=z13/-mtune=zEC12/')
-%endif
 
 # Use these same options for every invocation of 'make'.
 # Otherwise it will rebuild in %%install due to flags changes.
@@ -1058,6 +1053,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Mar 12 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.2.rc1
+- remove s390x gcc10 workaround (#1799408)
+
 * Tue Mar 10 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-0.1.rc1
 - update to 2.26.0-rc1
 - adjust make test options

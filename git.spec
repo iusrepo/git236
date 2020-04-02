@@ -85,7 +85,7 @@
 
 Name:           git
 Version:        2.26.0
-Release:        1%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1053,6 +1053,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Apr 02 2020 Björn Esser <besser82@fedoraproject.org> - 2.26.0-1.1
+- Fix string quoting for rpm >= 4.16
+
 * Sun Mar 22 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-1
 - update to 2.26.0
 

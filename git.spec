@@ -204,12 +204,12 @@ BuildRequires:  gnupg
 BuildRequires:  gnupg2-smime
 %endif
 # endif fedora or el > 8
-%if 0%{?fedora} || 0%{?rhel} == 6 || ( 0%{?rhel} >= 7 && ( %{_arch} == ppc64le || %{_arch} == x86_64 ) )
+%if 0%{?fedora} || 0%{?rhel} == 6 || ( 0%{?rhel} >= 7 && ( "%{_arch}" == "ppc64le" || "%{_arch}" == "x86_64" ) )
 BuildRequires:  highlight
 %endif
 # endif fedora, el-6, or el7+ (ppc64le/x86_64)
 BuildRequires:  httpd
-%if 0%{?fedora} && ! ( %{_arch} == i386 || %{_arch} == s390x )
+%if 0%{?fedora} && ! ( "%{_arch}" == "i386" || "%{_arch}" == "s390x" )
 BuildRequires:  jgit
 %endif
 # endif fedora (except i386 and s390x)

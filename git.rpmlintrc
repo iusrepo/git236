@@ -14,7 +14,7 @@ addFilter("git\..*: W: dangling-relative-symlink /usr/libexec/git-core/git-difft
 addFilter("git-gui.noarch: W: desktopfile-without-binary /usr/share/applications/git-gui.desktop git")
 
 # ignore no doc/manpage warnings where we don't expect any documentation
-addFilter("git-(all|core|gnome-keyring)\..*: W: no-documentation")
+addFilter("git-(all|core|credential-libsecret)\..*: W: no-documentation")
 addFilter("perl-Git-SVN.noarch: W: no-documentation")
 addFilter("git-core\..*: W: no-manual-page-for-binary")
 

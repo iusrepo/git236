@@ -297,7 +297,7 @@ Summary:        Meta-package to pull in all git tools
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 %if %{with libsecret}
-Requires:	git-credential-libsecret = %{version}-%{release}
+Requires:       git-credential-libsecret = %{version}-%{release}
 %endif
 # endif with libsecret
 %if %{with cvs}
@@ -1062,6 +1062,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Sat Apr 04 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-2
 - fix issue with fast-forward rebases when rebase.abbreviateCommands is set
+- fix/quiet rpmlint issues from libsecret split
 
 * Thu Apr 02 2020 Björn Esser <besser82@fedoraproject.org> - 2.26.0-1.1
 - Fix string quoting for rpm >= 4.16

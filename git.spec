@@ -84,8 +84,8 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.26.0
-Release:        2%{?rcrev}%{?dist}
+Version:        2.26.1
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1060,6 +1060,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Apr 14 2020 Todd Zullinger <tmz@pobox.com> - 2.26.1-1
+- update to 2.26.1 (CVE-2020-5260)
+
 * Sat Apr 04 2020 Todd Zullinger <tmz@pobox.com> - 2.26.0-2
 - fix issue with fast-forward rebases when rebase.abbreviateCommands is set
 - fix/quiet rpmlint issues from libsecret split

@@ -8,12 +8,17 @@
 
 # Settings for Fedora
 %if 0%{?fedora}
-%bcond_without              asciidoctor
 # linkchecker is not available on EL
 %bcond_without              linkcheck
 %else
-%bcond_with                 asciidoctor
 %bcond_with                 linkcheck
+%endif
+
+# Settings for Fedora and EL >= 9
+%if 0%{?fedora} || 0%{?rhel} >= 9
+%bcond_without              asciidoctor
+%else
+%bcond_with                 asciidoctor
 %endif
 
 # Settings for Fedora and EL > 7
@@ -85,7 +90,7 @@
 
 Name:           git
 Version:        2.26.2
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1060,6 +1065,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu May 21 2020 Merlin Mathesius <mmathesi@redhat.com> - 2.26.2-2
+- Minor conditional fixes for ELN
+
 * Mon Apr 20 2020 Todd Zullinger <tmz@pobox.com> - 2.26.2-1
 - update to 2.26.2 (CVE-2020-11008)
 

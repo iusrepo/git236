@@ -86,11 +86,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc1
 
 Name:           git
-Version:        2.26.2
-Release:        2%{?rcrev}%{?dist}
+Version:        2.27.0
+Release:        0.1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -122,12 +122,10 @@ Source99:       print-failed-test-output
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
 
-# Fix issue with fast-forward rebases when rebase.abbreviateCommands is set
-# https://lore.kernel.org/git/9b4bc756764d87c9f34c11e6ec2fc6482f531805.camel@gmail.com/
-# https://github.com/git/git/commit/68e7090f31
-Patch1:         0001-sequencer-don-t-abbreviate-a-command-if-it-doesn-t-h.patch
-# https://github.com/git/git/commit/de9f1d3ef4
-Patch2:         0002-t3432-test-merge-with-rebase.abbreviateCommands-true.patch
+# Fix doc build on EL-6 with old asciidoc
+# https://lore.kernel.org/git/CAL3xRKdwOASiGys%2B7Uu_OA5kBPrTdAURfEw3UQ%2BrguTXT%2BC6JQ@mail.gmail.com/
+# https://lore.kernel.org/git/20200519045301.GY24220@pobox.com/
+Patch1:         0001-gitfaq-avoid-validation-error-with-older-asciidoc.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1065,6 +1063,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu May 21 2020 Todd Zullinger <tmz@pobox.com> - 2.27.0-0.1.rc1
+- update to 2.27.0-rc1
+
 * Thu May 21 2020 Merlin Mathesius <mmathesi@redhat.com> - 2.26.2-2
 - Minor conditional fixes for ELN
 

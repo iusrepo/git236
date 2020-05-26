@@ -86,11 +86,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc1
+%global rcrev   .rc2
 
 Name:           git
 Version:        2.27.0
-Release:        0.1%{?rcrev}%{?dist}
+Release:        0.2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -121,11 +121,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# Fix doc build on EL-6 with old asciidoc
-# https://lore.kernel.org/git/CAL3xRKdwOASiGys%2B7Uu_OA5kBPrTdAURfEw3UQ%2BrguTXT%2BC6JQ@mail.gmail.com/
-# https://lore.kernel.org/git/20200519045301.GY24220@pobox.com/
-Patch1:         0001-gitfaq-avoid-validation-error-with-older-asciidoc.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1063,6 +1058,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue May 26 2020 Todd Zullinger <tmz@pobox.com> - 2.27.0-0.2.rc2
+- update to 2.27.0-rc2
+
 * Thu May 21 2020 Todd Zullinger <tmz@pobox.com> - 2.27.0-0.1.rc1
 - update to 2.27.0-rc1
 

@@ -90,7 +90,7 @@
 
 Name:           git
 Version:        2.27.0
-Release:        1%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1058,6 +1058,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Jun 23 2020 Jitka Plesnikova <jplesnik@redhat.com> - 2.27.0-1.1
+- Perl 5.32 rebuild
+
 * Mon Jun 01 2020 Todd Zullinger <tmz@pobox.com> - 2.27.0-1
 - update to 2.27.0
 

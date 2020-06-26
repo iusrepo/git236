@@ -90,7 +90,7 @@
 
 Name:           git
 Version:        2.27.0
-Release:        1%{?rcrev}%{?dist}.1
+Release:        1%{?rcrev}%{?dist}.2
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1058,6 +1058,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Jun 26 2020 Jitka Plesnikova <jplesnik@redhat.com> - 2.27.0-1.2
+- Perl 5.32 re-rebuild of bootstrapped packages
+
 * Tue Jun 23 2020 Jitka Plesnikova <jplesnik@redhat.com> - 2.27.0-1.1
 - Perl 5.32 rebuild
 

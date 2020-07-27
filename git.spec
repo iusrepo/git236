@@ -86,11 +86,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc2
+#global rcrev   .rc0
 
 Name:           git
 Version:        2.28.0
-Release:        0.3%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1058,6 +1058,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Jul 27 2020 Todd Zullinger <tmz@pobox.com> - 2.28.0-1
+- update to 2.28.0
+
 * Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.28.0-0.3.rc2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 

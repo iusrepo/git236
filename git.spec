@@ -86,11 +86,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
 
 Name:           git
-Version:        2.28.0
-Release:        1%{?rcrev}%{?dist}
+Version:        2.29.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -621,12 +621,11 @@ sed -i -e '1s@#! */usr/bin/env python$@#!%{__python2}@' \
     contrib/hg-to-git/hg-to-git.py \
     contrib/hooks/multimail/git_multimail.py \
     contrib/hooks/multimail/migrate-mailhook-config \
-    contrib/hooks/multimail/post-receive.example \
-    contrib/svn-fe/svnrdump_sim.py
+    contrib/hooks/multimail/post-receive.example
 %else
-# Remove contrib/fast-import/import-zips.py, contrib/hg-to-git, and
-# contrib/svn-fe which all require python2.
-rm -rf contrib/fast-import/import-zips.py contrib/hg-to-git contrib/svn-fe
+# Remove contrib/fast-import/import-zips.py and contrib/hg-to-git which all
+# require python2.
+rm -rf contrib/fast-import/import-zips.py contrib/hg-to-git
 %endif
 # endif with python2
 
@@ -795,7 +794,7 @@ not_core_doc_re="(git-(cvs|gui|citool|daemon|instaweb|subtree))|p4|svn|email|git
 mkdir -p %{buildroot}%{_pkgdocdir}/
 cp -pr CODE_OF_CONDUCT.md README.md Documentation/*.txt Documentation/RelNotes contrib %{buildroot}%{_pkgdocdir}/
 # Remove contrib/ files/dirs which have nothing useful for documentation
-rm -rf %{buildroot}%{_pkgdocdir}/contrib/{contacts,credential,svn-fe}/
+rm -rf %{buildroot}%{_pkgdocdir}/contrib/{contacts,credential}/
 cp -p gitweb/INSTALL %{buildroot}%{_pkgdocdir}/INSTALL.gitweb
 cp -p gitweb/README %{buildroot}%{_pkgdocdir}/README.gitweb
 
@@ -1058,6 +1057,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Oct 05 2020 Todd Zullinger <tmz@pobox.com> - 2.29.0-0.0.rc0
+- update to 2.29.0-rc0
+
 * Mon Jul 27 2020 Todd Zullinger <tmz@pobox.com> - 2.28.0-1
 - update to 2.28.0
 

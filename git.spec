@@ -634,21 +634,21 @@ export SOURCE_DATE_EPOCH=$(date -r version +%%s 2>/dev/null)
 %if %{with python2}
 sed -i -e '1s@#! */usr/bin/env python$@#!%{__python2}@' \
     contrib/fast-import/import-zips.py \
-    contrib/hg-to-git/hg-to-git.py \
     contrib/hooks/multimail/git_multimail.py \
     contrib/hooks/multimail/migrate-mailhook-config \
     contrib/hooks/multimail/post-receive.example
 %else
-# Remove contrib/fast-import/import-zips.py and contrib/hg-to-git which all
-# require python2.
-rm -rf contrib/fast-import/import-zips.py contrib/hg-to-git
+# Remove contrib/fast-import/import-zips.py which requires python2.
+rm -rf contrib/fast-import/import-zips.py
 %endif
 # endif with python2
 
 # The multimail hook is installed with git.  Use python3 to avoid an
-# unnecessary python2 dependency, if possible.
+# unnecessary python2 dependency, if possible.  Also fix contrib/hg-to-git
+# while here.
 %if %{with python3}
 sed -i -e '1s@#!\( */usr/bin/env python\|%{__python2}\)$@#!%{__python3}@' \
+    contrib/hg-to-git/hg-to-git.py \
     contrib/hooks/multimail/git_multimail.py \
     contrib/hooks/multimail/migrate-mailhook-config \
     contrib/hooks/multimail/post-receive.example
@@ -1079,6 +1079,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 * Fri Oct 09 2020 Todd Zullinger <tmz@pobox.com> - 2.29.0-0.1.rc1
 - update to 2.29.0-rc1
 - drop emacs-git stub for fedora >= 34 (#1882360)
+- adjust python hashbang in contrib/hg-to-git, it supports python3
 
 * Mon Oct 05 2020 Todd Zullinger <tmz@pobox.com> - 2.29.0-0.0.rc0
 - update to 2.29.0-rc0

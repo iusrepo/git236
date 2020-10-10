@@ -6,6 +6,13 @@
 
 %global gitexecdir          %{_libexecdir}/git-core
 
+# Settings for Fedora >= 34
+%if 0%{?fedora} >= 34
+%bcond_with                 emacs
+%else
+%bcond_without              emacs
+%endif
+
 # Settings for Fedora
 %if 0%{?fedora}
 # linkchecker is not available on EL
@@ -141,7 +148,10 @@ BuildRequires:  linkchecker
 # endif with docs
 BuildRequires:  desktop-file-utils
 BuildRequires:  diffutils
-BuildRequires:  emacs
+%if %{with emacs}
+BuildRequires:  emacs-common
+%endif
+# endif emacs-common
 BuildRequires:  expat-devel
 BuildRequires:  findutils
 BuildRequires:  gawk
@@ -264,10 +274,16 @@ Requires:       perl(Term::ReadKey)
 # endif ! defined perl_bootstrap
 Requires:       perl-Git = %{version}-%{release}
 
-%if %{emacs_filesystem} && %{defined _emacs_version}
+%if %{with emacs} && %{emacs_filesystem} && %{defined _emacs_version}
 Requires:       emacs-filesystem >= %{_emacs_version}
 %endif
-# endif emacs_filesystem
+# endif with emacs && emacs_filesystem
+
+# Obsolete emacs-git if it's disabled
+%if %{without emacs}
+Obsoletes:      emacs-git < %{?epoch:%{epoch}:}%{version}-%{release}
+%endif
+# endif without emacs
 
 # Obsolete git-cvs if it's disabled
 %if %{without cvs}
@@ -317,10 +333,10 @@ Requires:       perl-Git = %{version}-%{release}
 Requires:       perl(Term::ReadKey)
 %endif
 # endif ! defined perl_bootstrap
-%if ! %{emacs_filesystem}
+%if %{with emacs} && ! %{emacs_filesystem}
 Requires:       emacs-git = %{version}-%{release}
 %endif
-# endif ! emacs_filesystem
+# endif with emacs && ! emacs_filesystem
 %description all
 Git is a fast, scalable, distributed revision control system with an
 unusually rich command set that provides both high-level operations
@@ -397,7 +413,7 @@ Requires:       perl(Net::SMTP::SSL)
 %description email
 %{summary}.
 
-%if ! %{emacs_filesystem}
+%if %{with emacs} && ! %{emacs_filesystem}
 %package -n emacs-git
 Summary:        Git version control system support for Emacs
 Requires:       git = %{version}-%{release}
@@ -408,7 +424,7 @@ Provides:       emacs-git-el = %{version}-%{release}
 %description -n emacs-git
 %{summary}.
 %endif
-# endif ! emacs_filesystem
+# endif with emacs && ! emacs_filesystem
 
 %package -n gitk
 Summary:        Git repository browser
@@ -644,6 +660,7 @@ sed -i -e '1s@#!\( */usr/bin/env python\|%{__python2}\)$@#!%{__python3}@' \
 
 %make_install -C contrib/contacts
 
+%if %{with emacs}
 %global elispdir %{_emacs_sitelispdir}/git
 pushd contrib/emacs >/dev/null
 for el in *.el ; do
@@ -653,6 +670,8 @@ for el in *.el ; do
     rm -f $el # clean up to avoid cruft in git-core-doc
 done
 popd >/dev/null
+%endif
+# endif with emacs
 
 %if %{with libsecret}
 install -pm 755 contrib/credential/libsecret/git-credential-libsecret \
@@ -910,10 +929,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 # endif use_systemd
 
 %files -f bin-man-doc-git-files
-%if %{emacs_filesystem}
+%if %{with emacs} && %{emacs_filesystem}
 %{elispdir}
 %endif
-# endif emacs_filesystem
+# endif with emacs && emacs_filesystem
 %{_datadir}/git-core/contrib/diff-highlight
 %{_datadir}/git-core/contrib/hooks/multimail
 %{_datadir}/git-core/contrib/hooks/update-paranoid
@@ -980,12 +999,12 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_mandir}/man1/git-daemon*.1*}
 %{?with_docs:%{_pkgdocdir}/git-daemon*.html}
 
-%if ! %{emacs_filesystem}
+%if %{with emacs} && ! %{emacs_filesystem}
 %files -n emacs-git
 %{_pkgdocdir}/contrib/emacs/README
 %{elispdir}
 %endif
-# endif ! emacs_filesystem
+# endif with emacs && ! emacs_filesystem
 
 %files email
 %{_pkgdocdir}/*email*.txt
@@ -1059,6 +1078,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Fri Oct 09 2020 Todd Zullinger <tmz@pobox.com> - 2.29.0-0.1.rc1
 - update to 2.29.0-rc1
+- drop emacs-git stub for fedora >= 34 (#1882360)
 
 * Mon Oct 05 2020 Todd Zullinger <tmz@pobox.com> - 2.29.0-0.0.rc0
 - update to 2.29.0-rc0

@@ -96,7 +96,7 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.29.1
+Version:        2.29.2
 Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
@@ -128,15 +128,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# Fix bugs in am/rebase handling of committer ident/date discussed at
-# https://lore.kernel.org/git/20201023070747.GA2198273@coredump.intra.peff.net/
-#
-# The following three commits make up the patch
-# https://github.com/git/git/commit/56706dba33f5d4457395c651cf1cd033c6c03c7a
-# https://github.com/git/git/commit/16b0bb99eac5ebd02a5dcabdff2cfc390e9d92ef
-# https://github.com/git/git/commit/5f35edd9d7ebca17f205b338d340cc6ce214644a
-Patch1:         git-2.29.0-committer-date-is-author-date-fix.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1085,6 +1076,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Oct 29 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-1
+- update to 2.29.2
+
 * Sat Oct 24 2020 Todd Zullinger <tmz@pobox.com> - 2.29.1-1
 - update to 2.29.1
 - fix bugs in am/rebase handling of committer ident/date

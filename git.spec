@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.29.2
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -128,6 +128,10 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
+
+# https://bugzilla.redhat.com/1791810
+# https://lore.kernel.org/git/xmqqy2jglv29.fsf_-_@gitster.c.googlers.com/
+Patch1:         https://github.com/git/git/commit/39664cb0ac.patch#/0001-log-diagnose-L-used-with-pathspec-as-an-error.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1076,6 +1080,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Nov 07 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-2
+- apply upstream patch to resolve git log segfault (#1791810)
+
 * Thu Oct 29 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-1
 - update to 2.29.2
 

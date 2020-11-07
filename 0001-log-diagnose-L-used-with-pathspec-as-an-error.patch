@@ -1,0 +1,78 @@
+From 39664cb0aca42f240468ddf84fe75df4172ab63f Mon Sep 17 00:00:00 2001
+From: Junio C Hamano <gitster@pobox.com>
+Date: Wed, 4 Nov 2020 09:54:01 -0800
+Subject: [PATCH] log: diagnose -L used with pathspec as an error
+
+The -L option is documented to accept no pathspec, but the
+command line option parser has allowed the combination without
+checking so far.  Ensure that there is no pathspec when the -L
+option is in effect to fix this.
+
+Incidentally, this change fixes another bug in the command line
+option parser, which has allowed the -L option used together
+with the --follow option.  Because the latter requires exactly
+one path given, but the former takes no pathspec, they become
+mutually incompatible automatically.  Because the -L option
+follows renames on its own, there is no reason to give --follow
+at the same time.
+
+The new tests say they may fail with "-L and --follow being
+incompatible" instead of "-L and pathspec being incompatible".
+Currently the expected failure can come only from the latter, but
+this is to futureproof them, in case we decide to add code to
+explicititly die on -L and --follow used together.
+
+Heled-by: Jeff King <peff@peff.net>
+Signed-off-by: Junio C Hamano <gitster@pobox.com>
+---
+ builtin/log.c       |  3 +++
+ t/t4211-line-log.sh | 22 ++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
+
+diff --git a/builtin/log.c b/builtin/log.c
+index 0a7ed4bef92b9..9d70f3e60b9c0 100644
+--- a/builtin/log.c
++++ b/builtin/log.c
+@@ -206,6 +206,9 @@ static void cmd_log_init_finish(int argc, const char **argv, const char *prefix,
+ 	if (argc > 1)
+ 		die(_("unrecognized argument: %s"), argv[1]);
+ 
++	if (rev->line_level_traverse && rev->prune_data.nr)
++		die(_("-L<range>:<file> cannot be used with pathspec"));
++
+ 	memset(&w, 0, sizeof(w));
+ 	userformat_find_requirements(NULL, &w);
+ 
+diff --git a/t/t4211-line-log.sh b/t/t4211-line-log.sh
+index 2d1d7b5d1938a..85d151423dedc 100755
+--- a/t/t4211-line-log.sh
++++ b/t/t4211-line-log.sh
+@@ -8,6 +8,28 @@ test_expect_success 'setup (import history)' '
+ 	git reset --hard
+ '
+ 
++test_expect_success 'basic command line parsing' '
++	# This may fail due to "no such path a.c in commit", or
++	# "-L is incompatible with pathspec", depending on the
++	# order the error is checked.  Either is acceptable.
++	test_must_fail git log -L1,1:a.c -- a.c &&
++
++	# -L requires there is no pathspec
++	test_must_fail git log -L1,1:b.c -- b.c 2>error &&
++	test_i18ngrep "cannot be used with pathspec" error &&
++
++	# This would fail because --follow wants a single path, but
++	# we may fail due to incompatibility between -L/--follow in
++	# the future.  Either is acceptable.
++	test_must_fail git log -L1,1:b.c --follow &&
++	test_must_fail git log --follow -L1,1:b.c &&
++
++	# This would fail because -L wants no pathspec, but
++	# we may fail due to incompatibility between -L/--follow in
++	# the future.  Either is acceptable.
++	test_must_fail git log --follow -L1,1:b.c -- b.c
++'
++
+ canned_test_1 () {
+ 	test_expect_$1 "$2" "
+ 		git log $2 >actual &&

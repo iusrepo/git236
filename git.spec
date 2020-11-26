@@ -160,6 +160,11 @@ BuildRequires:  diffutils
 BuildRequires:  emacs-common
 %endif
 # endif emacs-common
+%if 0%{?rhel} == 7
+# Require epel-rpm-macros for the %%build_cflags and %%build_ldflags macros
+BuildRequires:  epel-rpm-macros
+%endif
+# endif rhel == 7
 BuildRequires:  expat-devel
 BuildRequires:  findutils
 BuildRequires:  gawk
@@ -1086,6 +1091,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Wed Nov 25 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-3
 - apply upstream patch to resolve git fast-import memory leak (#1900335)
+- add epel-rpm-macros BuildRequires on EL-7 (#1872865)
 
 * Sat Nov 07 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-2
 - apply upstream patch to resolve git log segfault (#1791810)

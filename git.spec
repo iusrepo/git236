@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.29.2
-Release:        2%{?rcrev}%{?dist}
+Release:        3%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -132,6 +132,10 @@ Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
 # https://bugzilla.redhat.com/1791810
 # https://lore.kernel.org/git/xmqqy2jglv29.fsf_-_@gitster.c.googlers.com/
 Patch1:         https://github.com/git/git/commit/39664cb0ac.patch#/0001-log-diagnose-L-used-with-pathspec-as-an-error.patch
+
+# https://bugzilla.redhat.com/1900335
+# https://lore.kernel.org/git/20201015153849.GA551964@coredump.intra.peff.net/
+Patch2:         https://github.com/git/git/commit/3f018ec716.patch#/0001-fast-import-fix-over-allocation-of-marks-storage.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1080,6 +1084,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Wed Nov 25 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-3
+- apply upstream patch to resolve git fast-import memory leak (#1900335)
+
 * Sat Nov 07 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-2
 - apply upstream patch to resolve git log segfault (#1791810)
 

@@ -10,6 +10,10 @@ addFilter("git(-core-doc)?\..*: W: dangling-relative-symlink /usr/share/doc/git/
 # git-gui requires git, which provides the git binary
 addFilter("git-gui.noarch: W: desktopfile-without-binary /usr/share/applications/git-gui.desktop git")
 
+# ignore no binary warning for main git package; making it noarch isn't trivial
+# since we have arch-specific subpackages
+addFilter("git\..*: E: no-binary$")
+
 # ignore no doc/manpage warnings where we don't expect any documentation
 addFilter("git-(all|core|credential-libsecret)\..*: W: no-documentation")
 addFilter("perl-Git-SVN.noarch: W: no-documentation")

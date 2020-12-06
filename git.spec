@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.29.2
-Release:        3%{?rcrev}%{?dist}
+Release:        4%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -810,7 +810,7 @@ chmod a-x Documentation/technical/api-index.sh
 find contrib -type f -print0 | xargs -r0 chmod -x
 
 # Split core files
-not_core_re="git-(add--interactive|contacts|credential-netrc|difftool|filter-branch|instaweb|request-pull|send-mail)|gitweb"
+not_core_re="git-(add--interactive|contacts|credential-netrc|filter-branch|instaweb|request-pull|send-mail)|gitweb"
 grep -vE "$not_core_re|%{_mandir}" bin-man-doc-files > bin-files-core
 touch man-doc-files-core
 %if %{with docs}
@@ -1089,6 +1089,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sun Dec 06 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-4
+- move git-difftool to git-core, it does not require perl
+
 * Wed Nov 25 2020 Todd Zullinger <tmz@pobox.com> - 2.29.2-3
 - apply upstream patch to resolve git fast-import memory leak (#1900335)
 - add epel-rpm-macros BuildRequires on EL-7 (#1872865)

@@ -93,11 +93,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc2
+#global rcrev   .rc0
 
 Name:           git
 Version:        2.30.0
-Release:        0.2%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1081,6 +1081,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Dec 28 2020 Todd Zullinger <tmz@pobox.com> - 2.30.0-1
+- update to 2.30.0
+
 * Wed Dec 23 2020 Todd Zullinger <tmz@pobox.com> - 2.30.0-0.2.rc2
 - update to 2.30.0-rc2
 

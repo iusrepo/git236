@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.30.1
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -323,6 +323,7 @@ Requires:       git-credential-libsecret = %{version}-%{release}
 Requires:       git-cvs = %{version}-%{release}
 %endif
 # endif with cvs
+Requires:       git-daemon = %{version}-%{release}
 Requires:       git-email = %{version}-%{release}
 Requires:       git-gui = %{version}-%{release}
 %if %{with p4}
@@ -1075,6 +1076,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Feb 18 2021 Ondřej Pohořelský <opohorel@redhat.com - 2.30.1-2
+- include git-daemon in git-all meta-package
+
 * Thu Feb 18 2021 Todd Zullinger <tmz@pobox.com>
 - re-enable t7812-grep-icase-non-ascii on s390x
 

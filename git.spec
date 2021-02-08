@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.30.0
-Release:        1%{?rcrev}%{?dist}.1
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -460,7 +460,11 @@ Summary:        Repository browser in gitweb
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 Requires:       gitweb = %{version}-%{release}
+%if 0%{?rhel} >= 9
+Requires:       httpd
+%else
 Requires:       lighttpd
+%endif
 
 %description instaweb
 A simple script to set up gitweb and a web server for browsing the local
@@ -1081,6 +1085,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Feb 08 2021 Ondřej Pohořelský <opohorel@redhat.com> - 2.30.0-2
+- add rhel 9 conditional to require httpd instead of lighttpd in git-instaweb
+
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.30.0-1.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 

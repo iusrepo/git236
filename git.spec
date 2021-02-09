@@ -96,8 +96,8 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.30.0
-Release:        2%{?rcrev}%{?dist}
+Version:        2.30.1
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1085,6 +1085,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Feb 09 2021 Todd Zullinger <tmz@pobox.com> - 2.30.1-1
+- update to 2.30.1
+
 * Mon Feb 08 2021 Ondřej Pohořelský <opohorel@redhat.com> - 2.30.0-2
 - add rhel 9 conditional to require httpd instead of lighttpd in git-instaweb
 

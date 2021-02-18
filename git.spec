@@ -883,16 +883,6 @@ GIT_SKIP_TESTS="$GIT_SKIP_TESTS t9115"
 %endif
 # endif %%{power64}
 
-%ifarch s390x
-# Skip tests which fail on s390x
-#
-# t7812-grep-icase-non-ascii's "PCRE v2: grep non-ASCII from invalid UTF-8
-# data" test fails on big-endian arches.  This is known upstream and will
-# hopefully be resolved soon (2019/10/24, tmz)
-GIT_SKIP_TESTS="$GIT_SKIP_TESTS t7812.11"
-%endif
-# endif s390x
-
 export GIT_SKIP_TESTS
 
 # Set LANG so various UTF-8 tests are run
@@ -1085,6 +1075,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Feb 18 2021 Todd Zullinger <tmz@pobox.com>
+- re-enable t7812-grep-icase-non-ascii on s390x
+
 * Tue Feb 09 2021 Todd Zullinger <tmz@pobox.com> - 2.30.1-1
 - update to 2.30.1
 

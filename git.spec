@@ -93,11 +93,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
 
 Name:           git
-Version:        2.30.1
-Release:        3%{?rcrev}%{?dist}
+Version:        2.31.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1070,6 +1070,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Mar 02 2021 Todd Zullinger <tmz@pobox.com> - 2.31.0-0.0.rc0
+- update to 2.31.0-rc0
+
 * Tue Mar 02 2021 Todd Zullinger <tmz@pobox.com> - 2.30.1-3
 - use %%{gpgverify} macro to verify tarball signature
 

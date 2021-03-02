@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.30.1
-Release:        2%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1076,6 +1076,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Mar 02 2021 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.30.1-2.1
+- Rebuilt for updated systemd-rpm-macros
+  See https://pagure.io/fesco/issue/2583.
+
 * Thu Feb 18 2021 Ondřej Pohořelský <opohorel@redhat.com - 2.30.1-2
 - include git-daemon in git-all meta-package
 

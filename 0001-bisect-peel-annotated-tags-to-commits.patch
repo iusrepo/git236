@@ -1,0 +1,83 @@
+From 7730f85594d4595605934e39d1d816ab663d8fa8 Mon Sep 17 00:00:00 2001
+From: Jeff King <peff@peff.net>
+Date: Tue, 16 Mar 2021 11:15:55 -0400
+Subject: [PATCH] bisect: peel annotated tags to commits
+
+This patch fixes a bug where git-bisect doesn't handle receiving
+annotated tags as "git bisect good <tag>", etc. It's a regression in
+27257bc466 (bisect--helper: reimplement `bisect_state` & `bisect_head`
+shell functions in C, 2020-10-15).
+
+The original shell code called:
+
+  sha=$(git rev-parse --verify "$rev^{commit}") ||
+          die "$(eval_gettext "Bad rev input: \$rev")"
+
+which will peel the input to a commit (or complain if that's not
+possible). But the C code just calls get_oid(), which will yield the oid
+of the tag.
+
+The fix is to peel to a commit. The error message here is a little
+non-idiomatic for Git (since it starts with a capital). I've mostly left
+it, as it matches the other converted messages (like the "Bad rev input"
+we print when get_oid() fails), though I did add an indication that it
+was the peeling that was the problem. It might be worth taking a pass
+through this converted code to modernize some of the error messages.
+
+Note also that the test does a bare "grep" (not i18ngrep) on the
+expected "X is the first bad commit" output message. This matches the
+rest of the test script.
+
+Signed-off-by: Jeff King <peff@peff.net>
+Signed-off-by: Junio C Hamano <gitster@pobox.com>
+---
+ builtin/bisect--helper.c    |  9 ++++++++-
+ t/t6030-bisect-porcelain.sh | 12 ++++++++++++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/builtin/bisect--helper.c b/builtin/bisect--helper.c
+index 709eb713a3ba4..81569530e4f08 100644
+--- a/builtin/bisect--helper.c
++++ b/builtin/bisect--helper.c
+@@ -875,12 +875,19 @@ static enum bisect_error bisect_state(struct bisect_terms *terms, const char **a
+ 	 */
+ 
+ 	for (; argc; argc--, argv++) {
++		struct commit *commit;
++
+ 		if (get_oid(*argv, &oid)){
+ 			error(_("Bad rev input: %s"), *argv);
+ 			oid_array_clear(&revs);
+ 			return BISECT_FAILED;
+ 		}
+-		oid_array_append(&revs, &oid);
++
++		commit = lookup_commit_reference(the_repository, &oid);
++		if (!commit)
++			die(_("Bad rev input (not a commit): %s"), *argv);
++
++		oid_array_append(&revs, &commit->object.oid);
+ 	}
+ 
+ 	if (strbuf_read_file(&buf, git_path_bisect_expected_rev(), 0) < the_hash_algo->hexsz ||
+diff --git a/t/t6030-bisect-porcelain.sh b/t/t6030-bisect-porcelain.sh
+index 52614eefc7e76..9abcee05548d3 100755
+--- a/t/t6030-bisect-porcelain.sh
++++ b/t/t6030-bisect-porcelain.sh
+@@ -936,4 +936,16 @@ test_expect_success 'git bisect reset cleans bisection state properly' '
+ 	test_path_is_missing ".git/BISECT_START"
+ '
+ 
++test_expect_success 'bisect handles annotated tags' '
++	test_commit commit-one &&
++	git tag -m foo tag-one &&
++	test_commit commit-two &&
++	git tag -m foo tag-two &&
++	git bisect start &&
++	git bisect good tag-one &&
++	git bisect bad tag-two >output &&
++	bad=$(git rev-parse --verify tag-two^{commit}) &&
++	grep "$bad is the first bad commit" output
++'
++
+ test_done

@@ -96,8 +96,8 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.31.0
-Release:        2%{?rcrev}%{?dist}
+Version:        2.31.1
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -128,9 +128,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# https://lore.kernel.org/git/878s6nz1sg.fsf@igel.home/
-Patch1:         https://github.com/git/git/commit/7730f85594.patch#/0001-bisect-peel-annotated-tags-to-commits.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1073,6 +1070,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Mar 27 2021 Todd Zullinger <tmz@pobox.com> - 2.31.1-1
+- update to 2.31.1
+
 * Fri Mar 19 2021 Todd Zullinger <tmz@pobox.com> - 2.31.0-2
 - fix git bisect with annotaged tags
 

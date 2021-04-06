@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.31.1
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -964,7 +964,6 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 
 %if %{with libsecret}
 %files credential-libsecret
-%defattr(-,root,root)
 %{gitexecdir}/git-credential-libsecret
 %endif
 # endif with libsecret
@@ -1036,7 +1035,6 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-citool.html}
 
 %files instaweb
-%defattr(-,root,root)
 %{gitexecdir}/git-instaweb
 %{_pkgdocdir}/git-instaweb.txt
 %{?with_docs:%{_mandir}/man1/git-instaweb.1*}
@@ -1070,6 +1068,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Apr 06 2021 Todd Zullinger <tmz@pobox.com> - 2.31.1-2
+- remove two stray %%defattr macros from %%files sections
+
 * Sat Mar 27 2021 Todd Zullinger <tmz@pobox.com> - 2.31.1-1
 - update to 2.31.1
 

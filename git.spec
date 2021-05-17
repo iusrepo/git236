@@ -76,11 +76,11 @@
 %endif
 
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
 
 Name:           git
-Version:        2.31.1
-Release:        3%{?rcrev}%{?dist}.1
+Version:        2.32.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -111,11 +111,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# https://bugzilla.redhat.com/1952030
-# https://lore.kernel.org/git/D99DD9AD-54E5-4357-BA50-8B9CAE23084E@amazon.com/
-# https://github.com/git/git/commit/75555676ad
-Patch1:         0001-builtin-init-db-handle-bare-clones-when-core.bare-se.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -990,6 +985,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.31.1-3.1
 - Perl 5.34 rebuild
+
+* Mon May 17 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.0.rc0
+- update to 2.32.0-rc0
 
 * Sun May 16 2021 Todd Zullinger <tmz@pobox.com>
 - clean up various dist conditionals

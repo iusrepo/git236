@@ -97,7 +97,7 @@
 
 Name:           git
 Version:        2.31.1
-Release:        3%{?rcrev}%{?dist}
+Release:        3%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1073,6 +1073,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.31.1-3.1
+- Perl 5.34 rebuild
+
 * Wed Apr 21 2021 Todd Zullinger <tmz@pobox.com> - 2.31.1-3
 - apply upstream patch to fix clone --bare segfault
   Resolves: rhbz#1952030

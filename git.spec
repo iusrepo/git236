@@ -63,11 +63,11 @@
 %bcond_without              libsecret
 
 # Allow p4 subpackage to be toggled via --with/--without
-# Disable by default if we lack python2 support
-%if %{without python2}
-%bcond_with                 p4
-%else
+# Disable by default if we lack python2 or python3 support
+%if %{with python2} || %{with python3}
 %bcond_without              p4
+%else
+%bcond_with                 p4
 %endif
 
 # Hardening flags for EL-7
@@ -230,12 +230,13 @@ BuildRequires:  perl(POSIX)
 BuildRequires:  perl(Term::ReadLine)
 BuildRequires:  perl(Test::More)
 BuildRequires:  perl(Time::HiRes)
+%if %{with python3}
+BuildRequires:  python3-devel
+%else
 %if %{with python2}
 BuildRequires:  python2-devel
 %endif
 # endif with python2
-%if %{with python3}
-BuildRequires:  python3-devel
 %endif
 # endif with python3
 BuildRequires:  subversion
@@ -428,7 +429,15 @@ repository.
 %package p4
 Summary:        Git tools for working with Perforce depots
 BuildArch:      noarch
+%if %{with python3}
+BuildRequires:  python3-devel
+%else
+%if %{with python2}
 BuildRequires:  python2-devel
+%endif
+# endif with python2
+%endif
+# endif with python3
 Requires:       git = %{version}-%{release}
 %description p4
 %{summary}.
@@ -510,16 +519,18 @@ INSTALL_SYMLINKS = 1
 GITWEB_PROJECTROOT = %{_localstatedir}/lib/git
 GNU_ROFF = 1
 NO_PERL_CPAN_FALLBACKS = 1
+%if %{with python3}
+PYTHON_PATH = %{__python3}
+%else
 %if %{with python2}
 PYTHON_PATH = %{__python2}
 %else
 NO_PYTHON = 1
 %endif
-# endif with python2
+%endif
 %if %{with asciidoctor}
 USE_ASCIIDOCTOR = 1
 %endif
-# endif with asciidoctor
 htmldir = %{?_pkgdocdir}%{!?_pkgdocdir:%{_docdir}/%{name}-%{version}}
 prefix = %{_prefix}
 perllibdir = %{perl_vendorlib}
@@ -985,6 +996,8 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Sat May 22 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.1.rc1
 - update to 2.32.0-rc1
+- rearrange python2/python3 conditionals
+- re-enable git-p4 with python3
 
 * Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.31.1-3.1
 - Perl 5.34 rebuild

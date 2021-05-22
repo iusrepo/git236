@@ -129,6 +129,7 @@ BuildRequires:  linkchecker
 # endif with linkcheck
 %endif
 # endif with docs
+BuildRequires:  coreutils
 BuildRequires:  desktop-file-utils
 BuildRequires:  diffutils
 %if %{with emacs}
@@ -998,6 +999,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 - update to 2.32.0-rc1
 - rearrange python2/python3 conditionals
 - re-enable git-p4 with python3
+- add coreutils BuildRequires
 
 * Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.31.1-3.1
 - Perl 5.34 rebuild

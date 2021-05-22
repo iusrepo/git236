@@ -513,7 +513,6 @@ cat << \EOF | tee config.mak
 V = 1
 CFLAGS = %{build_cflags}
 LDFLAGS = %{build_ldflags}
-NEEDS_CRYPTO_WITH_SSL = 1
 USE_LIBPCRE = 1
 ETC_GITCONFIG = %{_sysconfdir}/gitconfig
 INSTALL_SYMLINKS = 1
@@ -1000,6 +999,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 - rearrange python2/python3 conditionals
 - re-enable git-p4 with python3
 - add coreutils BuildRequires
+- remove unneeded NEEDS_CRYPTO_WITH_SSL
 
 * Fri May 21 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.31.1-3.1
 - Perl 5.34 rebuild

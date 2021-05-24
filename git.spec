@@ -80,7 +80,7 @@
 
 Name:           git
 Version:        2.32.0
-Release:        0.1%{?rcrev}%{?dist}
+Release:        0.2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -994,6 +994,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon May 24 2021 Jitka Plesnikova <jplesnik@redhat.com> - 2.32.0-0.2.rc1
+- Perl 5.34 re-rebuild of bootstrapped packages
+
 * Sat May 22 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.1.rc1
 - update to 2.32.0-rc1
 - rearrange python2/python3 conditionals

@@ -80,7 +80,7 @@
 
 Name:           git
 Version:        2.32.0
-Release:        0.4%{?rcrev}%{?dist}
+Release:        0.5%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -205,7 +205,7 @@ BuildRequires:  highlight
 %endif
 # endif fedora or el7+ (ppc64le/x86_64)
 BuildRequires:  httpd
-%if 0%{?fedora} && ! ( "%{_arch}" == "i386" || "%{_arch}" == "s390x" )
+%if 0%{?fedora} && ! ( 0%{?fedora} >= 35 || "%{_arch}" == "i386" || "%{_arch}" == "s390x" )
 BuildRequires:  jgit
 %endif
 # endif fedora (except i386 and s390x)
@@ -994,6 +994,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Jun 03 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.5.rc3
+- drop jgit on Fedora >= 35
+  Resolves: rhbz#1965808
+
 * Wed Jun 02 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.4.rc3
 - update to 2.32.0-rc3
 

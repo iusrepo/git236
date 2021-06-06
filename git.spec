@@ -826,11 +826,13 @@ export GIT_SKIP_TESTS
 export LANG=en_US.UTF-8
 
 # Explicitly enable tests which may be skipped opportunistically
-# (Check for variables set via test_tristate in the test suite)
-export GIT_SVN_TEST_HTTPD=true
+# Check for variables set via test_bool_env in the test suite:
+#   git grep 'test_bool_env GIT_' -- t/{lib-,t[0-9]}*.sh |
+#       sed -r 's/.* (GIT_[^ ]+) .*/\1/g' | sort -u
 export GIT_TEST_GIT_DAEMON=true
 export GIT_TEST_HTTPD=true
 export GIT_TEST_SVNSERVE=true
+export GIT_TEST_SVN_HTTPD=true
 
 # Create tmpdir for test output and update GIT_TEST_OPTS
 # Also update GIT-BUILD-OPTIONS to keep make from any needless rebuilding
@@ -998,6 +1000,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 * Sun Jun 06 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-1
 - update to 2.32.0
 - add perl(File::Compare) BuildRequires
+- fix var to enable git-svn tests with httpd
 
 * Thu Jun 03 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.5.rc3
 - drop jgit on Fedora >= 35

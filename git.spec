@@ -122,6 +122,7 @@ BuildRequires:  rubygem-asciidoctor
 BuildRequires:  asciidoc >= 8.4.1
 %endif
 # endif with asciidoctor
+BuildRequires:  perl(File::Compare)
 BuildRequires:  xmlto
 %if %{with linkcheck}
 BuildRequires:  linkchecker
@@ -996,6 +997,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Sun Jun 06 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-1
 - update to 2.32.0
+- add perl(File::Compare) BuildRequires
 
 * Thu Jun 03 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.5.rc3
 - drop jgit on Fedora >= 35

@@ -76,11 +76,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc3
+#global rcrev   .rc0
 
 Name:           git
 Version:        2.32.0
-Release:        0.5%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -994,6 +994,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sun Jun 06 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-1
+- update to 2.32.0
+
 * Thu Jun 03 2021 Todd Zullinger <tmz@pobox.com> - 2.32.0-0.5.rc3
 - drop jgit on Fedora >= 35
   Resolves: rhbz#1965808

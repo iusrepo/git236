@@ -80,7 +80,7 @@
 
 Name:           git
 Version:        2.32.0
-Release:        1%{?rcrev}%{?dist}.1
+Release:        1%{?rcrev}%{?dist}.2
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -997,6 +997,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Sep 14 2021 Sahana Prasad <sahana@redhat.com> - 2.32.0-1.2
+- Rebuilt with OpenSSL 3.0.0
+
 * Thu Jul 22 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.32.0-1.1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 

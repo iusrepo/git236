@@ -79,8 +79,8 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.32.0
-Release:        1%{?rcrev}%{?dist}.2
+Version:        2.33.0
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -588,25 +588,17 @@ export SOURCE_DATE_EPOCH=$(date -r version +%%s 2>/dev/null)
 # Fix shebang in a few places to silence rpmlint complaints
 %if %{with python2}
 sed -i -e '1s@#! */usr/bin/env python$@#!%{__python2}@' \
-    contrib/fast-import/import-zips.py \
-    contrib/hooks/multimail/git_multimail.py \
-    contrib/hooks/multimail/migrate-mailhook-config \
-    contrib/hooks/multimail/post-receive.example
+    contrib/fast-import/import-zips.py
 %else
 # Remove contrib/fast-import/import-zips.py which requires python2.
 rm -rf contrib/fast-import/import-zips.py
 %endif
 # endif with python2
 
-# The multimail hook is installed with git.  Use python3 to avoid an
-# unnecessary python2 dependency, if possible.  Also fix contrib/hg-to-git
-# while here.
+# Use python3 to avoid an unnecessary python2 dependency, if possible.
 %if %{with python3}
 sed -i -e '1s@#!\( */usr/bin/env python\|%{__python2}\)$@#!%{__python3}@' \
-    contrib/hg-to-git/hg-to-git.py \
-    contrib/hooks/multimail/git_multimail.py \
-    contrib/hooks/multimail/migrate-mailhook-config \
-    contrib/hooks/multimail/post-receive.example
+    contrib/hg-to-git/hg-to-git.py
 %endif
 # endif with python3
 
@@ -704,9 +696,6 @@ ln -s git %{buildroot}%{bashcompdir}/gitk
 mkdir -p %{buildroot}%{_datadir}/git-core/contrib/completion
 install -pm 644 contrib/completion/git-completion.tcsh \
     %{buildroot}%{_datadir}/git-core/contrib/completion/
-
-# Drop .py extension from git_multimail to avoid byte-compiling
-mv contrib/hooks/multimail/git_multimail{.py,}
 
 # Move contrib/hooks out of %%docdir
 mkdir -p %{buildroot}%{_datadir}/git-core/contrib
@@ -869,7 +858,6 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %endif
 # endif with emacs
 %{_datadir}/git-core/contrib/diff-highlight
-%{_datadir}/git-core/contrib/hooks/multimail
 %{_datadir}/git-core/contrib/hooks/update-paranoid
 %{_datadir}/git-core/contrib/hooks/setgitperms.perl
 %{_datadir}/git-core/templates/hooks/fsmonitor-watchman.sample
@@ -886,7 +874,6 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %license COPYING
 # exclude is best way here because of troubles with symlinks inside git-core/
 %exclude %{_datadir}/git-core/contrib/diff-highlight
-%exclude %{_datadir}/git-core/contrib/hooks/multimail
 %exclude %{_datadir}/git-core/contrib/hooks/update-paranoid
 %exclude %{_datadir}/git-core/contrib/hooks/setgitperms.perl
 %exclude %{_datadir}/git-core/templates/hooks/fsmonitor-watchman.sample
@@ -997,6 +984,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Sep 27 2021 Ondřej Pohořelský <opohorel@redhat.com> - 2.33.0-1
+- update to 2.33.0
+- contrib/hooks/multimail is no longer distributed with git
+
 * Tue Sep 14 2021 Sahana Prasad <sahana@redhat.com> - 2.32.0-1.2
 - Rebuilt with OpenSSL 3.0.0
 

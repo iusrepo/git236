@@ -1,0 +1,28 @@
+From c221f23ebe2defeb31cfcab6387f8985b5c863bb Mon Sep 17 00:00:00 2001
+From: Todd Zullinger <tmz@pobox.com>
+Date: Tue, 12 Oct 2021 21:00:55 -0400
+Subject: [PATCH] doc: add bundle-format to TECH_DOCS
+
+A link to the bundle-format was added in 5c8273d57c (bundle doc: rewrite
+the "DESCRIPTION" section, 2021-07-31).
+
+Ensure `technical/bundle-format.html` is created to avoid a broken link
+in `git-bundle.html`.
+
+Signed-off-by: Todd Zullinger <tmz@pobox.com>
+---
+ Documentation/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/Makefile b/Documentation/Makefile
+index f5605b7767..2021568cd5 100644
+--- a/Documentation/Makefile
++++ b/Documentation/Makefile
+@@ -90,6 +90,7 @@ SP_ARTICLES += $(API_DOCS)
+ TECH_DOCS += MyFirstContribution
+ TECH_DOCS += MyFirstObjectWalk
+ TECH_DOCS += SubmittingPatches
++TECH_DOCS += technical/bundle-format
+ TECH_DOCS += technical/hash-function-transition
+ TECH_DOCS += technical/http-protocol
+ TECH_DOCS += technical/index-format

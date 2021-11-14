@@ -80,7 +80,7 @@
 
 Name:           git
 Version:        2.33.1
-Release:        2%{?rcrev}%{?dist}
+Release:        3%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -388,14 +388,20 @@ Summary:        Git tools for sending patches via email
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 Requires:       perl(Authen::SASL)
-Requires:       perl(Net::SMTP::SSL)
 Requires:       perl(Cwd)
+Requires:       perl(Email::Valid)
+Requires:       perl(File::Spec)
 Requires:       perl(File::Spec::Functions)
 Requires:       perl(File::Temp)
+Requires:       perl(IO::Socket::SSL)
 Requires:       perl(Mail::Address)
+Requires:       perl(MIME::Base64)
+Requires:       perl(MIME::QuotedPrint)
 Requires:       perl(Net::Domain)
 Requires:       perl(Net::SMTP)
+Requires:       perl(Net::SMTP::SSL)
 Requires:       perl(POSIX)
+Requires:       perl(Sys::Hostname)
 Requires:       perl(Term::ANSIColor)
 Requires:       perl(Term::ReadLine)
 Requires:       perl(Text::ParseWords)
@@ -998,6 +1004,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sun Nov 14 2021 Todd Zullinger <tmz@pobox.com> - 2.33.1-3
+- add more git-email perl dependencies
+- Resolves: rhbz#2020487
+
 * Thu Nov 11 2021 Ondřej Pohořelský <opohorel@redhat.com> - 2.33.1-2
 - add Perl requires to git-email
 - Resolves: rhbz#2020487

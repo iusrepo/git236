@@ -79,8 +79,8 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.33.1
-Release:        3%{?rcrev}%{?dist}
+Version:        2.34.0
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -111,10 +111,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# fix the broken link in git-bundle.html
-# https://lore.kernel.org/git/20211013032852.959985-1-tmz@pobox.com/
-Patch1:         0001-doc-add-bundle-format-to-TECH_DOCS.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -215,6 +211,7 @@ BuildRequires:  jgit
 %endif
 # endif fedora (except i386 and s390x)
 BuildRequires:  mod_dav_svn
+BuildRequires:  openssh
 BuildRequires:  perl(App::Prove)
 BuildRequires:  perl(CGI)
 BuildRequires:  perl(CGI::Carp)
@@ -1004,6 +1001,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Nov 15 2021 Todd Zullinger <tmz@pobox.com> - 2.34.0-1
+- update to 2.34.0
+
 * Sun Nov 14 2021 Todd Zullinger <tmz@pobox.com> - 2.33.1-3
 - add more git-email perl dependencies
 - Resolves: rhbz#2020487

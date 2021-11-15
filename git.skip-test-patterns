@@ -12,6 +12,8 @@ missing NATIVE_CRLF
 missing !PCRE
 missing !PTHREADS
 missing RFC1991
+missing RUNTIME_PREFIX
+missing SYMLINKS_WINDOWS
 missing TAR_NEEDS_PAX_FALLBACK
 missing UTF8_NFD_TO_NFC
 missing WINDOWS

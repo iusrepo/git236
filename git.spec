@@ -79,7 +79,7 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.34.0
+Version:        2.34.1
 Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
@@ -1001,6 +1001,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Nov 25 2021 Todd Zullinger <tmz@pobox.com> - 2.34.1-1
+- update to 2.34.1
+
 * Mon Nov 15 2021 Todd Zullinger <tmz@pobox.com> - 2.34.0-1
 - update to 2.34.0
 

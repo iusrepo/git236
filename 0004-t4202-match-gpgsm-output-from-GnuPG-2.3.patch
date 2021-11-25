@@ -1,0 +1,33 @@
+From d1efcac68414b80cc0fd7b7e3b4781f313d98697 Mon Sep 17 00:00:00 2001
+From: Todd Zullinger <tmz@pobox.com>
+Date: Sat, 27 Nov 2021 05:31:13 -0500
+Subject: [PATCH] t4202: match gpgsm output from GnuPG 2.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In GnuPG 2.3, the output from gpgsm when a certificate is not found
+differs from that of earlier versions.  This appears to be a bug¹, but
+there are several releases in use now which have this output.  Extend
+the grep pattern to catch it rather than failing the test.
+
+¹ https://lists.gnupg.org/pipermail/gnupg-devel/2021-November/034991.html
+
+Signed-off-by: Todd Zullinger <tmz@pobox.com>
+---
+ t/t4202-log.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/t/t4202-log.sh b/t/t4202-log.sh
+index 7884e3d46b..c69f9ac469 100755
+--- a/t/t4202-log.sh
++++ b/t/t4202-log.sh
+@@ -1851,7 +1851,7 @@ test_expect_success GPGSM 'log --graph --show-signature for merged tag x509 miss
+ 	git merge --no-ff -m msg signed_tag_x509_nokey &&
+ 	GNUPGHOME=. git log --graph --show-signature -n1 plain-x509-nokey >actual &&
+ 	grep "^|\\\  merged tag" actual &&
+-	grep "^| | gpgsm: certificate not found" actual
++	grep -Ei "^| | gpgsm:( failed to find the)? certificate:? not found" actual
+ '
+ 
+ test_expect_success GPGSM 'log --graph --show-signature for merged tag x509 bad signature' '

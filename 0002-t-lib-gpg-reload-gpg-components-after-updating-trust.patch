@@ -1,0 +1,31 @@
+From 93299b9b221da01d4055528f7c760d04ee83b82b Mon Sep 17 00:00:00 2001
+From: Todd Zullinger <tmz@pobox.com>
+Date: Thu, 25 Nov 2021 08:07:32 -0500
+Subject: [PATCH] t/lib-gpg: reload gpg components after updating trustlist
+
+With gpgsm from gnupg-2.3, the changes to the trustlist.txt do not
+appear to be picked up without refreshing the gpg-agent.  Use the 'all'
+keyword to reload all of the gpg components.  The scdaemon is started as
+a child of gpg-agent, for example.
+
+We used to have a --kill at this spot, but I removed it in 2e285e7803
+(t/lib-gpg: drop redundant killing of gpg-agent, 2019-02-07).  It seems
+like it might be necessary (again) for 2.3.
+
+Signed-off-by: Todd Zullinger <tmz@pobox.com>
+---
+ t/lib-gpg.sh | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/t/lib-gpg.sh b/t/lib-gpg.sh
+index cbbf74e725..d675698a2d 100644
+--- a/t/lib-gpg.sh
++++ b/t/lib-gpg.sh
+@@ -75,6 +75,7 @@ test_lazy_prereq GPGSM '
+ 	gpgsm --homedir "${GNUPGHOME}" -K --with-colons |
+ 	awk -F ":" "/^fpr:/ {printf \"%s S relax\\n\", \$10}" \
+ 		>"${GNUPGHOME}/trustlist.txt" &&
++	(gpgconf --reload all || : ) &&
+ 
+ 	echo hello | gpgsm --homedir "${GNUPGHOME}" >/dev/null \
+ 	       -u committer@example.com -o /dev/null --sign -

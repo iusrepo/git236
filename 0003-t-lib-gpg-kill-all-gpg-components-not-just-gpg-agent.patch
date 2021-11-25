@@ -1,0 +1,40 @@
+From da340dd76714474126f73f6b53087da0ffd4e8d8 Mon Sep 17 00:00:00 2001
+From: Todd Zullinger <tmz@pobox.com>
+Date: Fri, 26 Nov 2021 21:11:54 -0500
+Subject: [PATCH] t/lib-gpg: kill all gpg components, not just gpg-agent
+
+The gpg-agent is one of several processes that newer releases of GnuPG
+start automatically.  Issue a kill to each of them to ensure they do not
+affect separate tests.  (Yes, the separate GNUPGHOME should do that
+already. If we find that is case, we could drop the --kill entirely.)
+
+In terms of compatibility, the 'all' keyword was added to the --kill &
+--reload options in GnuPG 2.1.18.  Debian and RHEL are often used as
+indicators of how a change might affect older systems we often try to
+support.
+
+    - Debian Strech (old old stable), which has limited security support
+      until June 2022, has GnuPG 2.1.18 (or 2.2.x in backports).
+
+    - CentOS/RHEL 7, which is supported until June 2024, has GnuPG
+      2.0.22, which lacks the --kill option, so the change won't have
+      any impact.
+
+Signed-off-by: Todd Zullinger <tmz@pobox.com>
+---
+ t/lib-gpg.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/t/lib-gpg.sh b/t/lib-gpg.sh
+index d675698a2d..2bb309a8c1 100644
+--- a/t/lib-gpg.sh
++++ b/t/lib-gpg.sh
+@@ -40,7 +40,7 @@ test_lazy_prereq GPG '
+ 		#		> lib-gpg/ownertrust
+ 		mkdir "$GNUPGHOME" &&
+ 		chmod 0700 "$GNUPGHOME" &&
+-		(gpgconf --kill gpg-agent || : ) &&
++		(gpgconf --kill all || : ) &&
+ 		gpg --homedir "${GNUPGHOME}" --import \
+ 			"$TEST_DIRECTORY"/lib-gpg/keyring.gpg &&
+ 		gpg --homedir "${GNUPGHOME}" --import-ownertrust \

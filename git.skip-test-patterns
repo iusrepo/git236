@@ -4,7 +4,7 @@ GIT_SKIP_TESTS
 missing AUTOIDENT
 missing CASE_INSENSITIVE_FS
 missing DONTHAVEIT
-missing EXPENSIVE
+missing ([!]LONG_IS_64BIT,)?EXPENSIVE
 missing JGIT
 missing !?LAZY_(TRUE|FALSE)
 missing MINGW

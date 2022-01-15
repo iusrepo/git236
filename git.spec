@@ -76,11 +76,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc0
+%global rcrev   .rc1
 
 Name:           git
 Version:        2.35.0
-Release:        0.0%{?rcrev}%{?dist}
+Release:        0.1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -118,10 +118,6 @@ Patch2:         0002-t-lib-gpg-reload-gpg-components-after-updating-trust.patch
 Patch3:         0003-t-lib-gpg-kill-all-gpg-components-not-just-gpg-agent.patch
 Patch4:         0004-t4202-match-gpgsm-output-from-GnuPG-2.3.patch
 Patch5:         0005-gpg-interface-match-SIG_CREATED-if-it-s-the-first-li.patch
-
-# Fix tag message contents
-# https://lore.kernel.org/git/CAHk-=whXPxWL7z3GiPkaDt+yygrRmagrYUnib7Lx=Vvrqx2ufg@mail.gmail.com/
-Patch6:         https://lore.kernel.org/git/6e08b73d602853b3de71257117e85e32b96b5c19.1641849502.git.me@ttaylorr.com/raw#/0001-fmt-merge-msg-prevent-use-after-free-with-signed-tag.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1012,6 +1008,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Jan 15 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.1.rc1
+- update to 2.35.0-rc1
+
 * Mon Jan 10 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.0.rc0
 - update to 2.35.0-rc0
 

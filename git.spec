@@ -39,6 +39,7 @@
 %else
 %bcond_without              python2
 %bcond_with                 python3
+%global build_cflags        %{build_cflags} -fPIC -std=gnu99
 %global gitweb_httpd_conf   git.conf
 %global use_glibc_langpacks 0
 %global use_perl_generators 0
@@ -80,7 +81,7 @@
 
 Name:           git
 Version:        2.35.0
-Release:        0.2%{?rcrev}%{?dist}.1
+Release:        0.2%{?rcrev}%{?dist}.2
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -548,6 +549,9 @@ INSTALL_SYMLINKS = 1
 GITWEB_PROJECTROOT = %{_localstatedir}/lib/git
 GNU_ROFF = 1
 NO_PERL_CPAN_FALLBACKS = 1
+%if 0%{?rhel} && 0%{?rhel} < 8
+NO_UNCOMPRESS2 = 1
+%endif
 %if %{with python3}
 PYTHON_PATH = %{__python3}
 %else
@@ -1012,6 +1016,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Jan 21 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.2
+- fix compilation on EL7
+
 * Thu Jan 20 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.1
 - checkout: avoid BUG() when hitting a broken repository (rhbz#2042920)
 

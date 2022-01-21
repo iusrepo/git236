@@ -80,7 +80,7 @@
 
 Name:           git
 Version:        2.35.0
-Release:        0.2%{?rcrev}%{?dist}
+Release:        0.2%{?rcrev}%{?dist}.1
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -118,6 +118,10 @@ Patch2:         0002-t-lib-gpg-reload-gpg-components-after-updating-trust.patch
 Patch3:         0003-t-lib-gpg-kill-all-gpg-components-not-just-gpg-agent.patch
 Patch4:         0004-t4202-match-gpgsm-output-from-GnuPG-2.3.patch
 Patch5:         0005-gpg-interface-match-SIG_CREATED-if-it-s-the-first-li.patch
+
+# checkout: avoid BUG() when hitting a broken repository
+# https://bugzilla.redhat.com/2042920
+Patch6:         https://github.com/git/git/commit/519947b69a.patch#/0001-checkout-avoid-BUG-when-hitting-a-broken-repository.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1008,6 +1012,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Thu Jan 20 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.1
+- checkout: avoid BUG() when hitting a broken repository (rhbz#2042920)
+
 * Wed Jan 19 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2
 - update to 2.35.0-rc2
 

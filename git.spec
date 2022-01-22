@@ -81,7 +81,7 @@
 
 Name:           git
 Version:        2.35.0
-Release:        0.2%{?rcrev}%{?dist}.2
+Release:        0.2%{?rcrev}%{?dist}.3
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -675,6 +675,9 @@ install -Dpm 0755 contrib/diff-highlight/diff-highlight \
     %{buildroot}%{_datadir}/git-core/contrib/diff-highlight
 rm -rf contrib/diff-highlight/{Makefile,diff-highlight,*.perl,t}
 
+# Remove contrib/scalar to avoid cruft in the git-core-doc docdir
+rm -rf contrib/scalar
+
 # Clean up contrib/subtree to avoid cruft in the git-core-doc docdir
 rm -rf contrib/subtree/{INSTALL,Makefile,git-subtree*,t}
 
@@ -1016,6 +1019,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Jan 22 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.3
+- remove contrib/scalar to avoid cruft in git-core-doc
+
 * Fri Jan 21 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.2
 - fix compilation on EL7
 

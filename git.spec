@@ -77,11 +77,11 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc2
+#global rcrev   .rc0
 
 Name:           git
 Version:        2.35.0
-Release:        0.2%{?rcrev}%{?dist}.3
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -119,10 +119,6 @@ Patch2:         0002-t-lib-gpg-reload-gpg-components-after-updating-trust.patch
 Patch3:         0003-t-lib-gpg-kill-all-gpg-components-not-just-gpg-agent.patch
 Patch4:         0004-t4202-match-gpgsm-output-from-GnuPG-2.3.patch
 Patch5:         0005-gpg-interface-match-SIG_CREATED-if-it-s-the-first-li.patch
-
-# checkout: avoid BUG() when hitting a broken repository
-# https://bugzilla.redhat.com/2042920
-Patch6:         https://github.com/git/git/commit/519947b69a.patch#/0001-checkout-avoid-BUG-when-hitting-a-broken-repository.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1019,6 +1015,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Jan 24 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-1
+- update to 2.35.0
+
 * Sat Jan 22 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.3
 - remove contrib/scalar to avoid cruft in git-core-doc
 

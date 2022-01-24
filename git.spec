@@ -76,6 +76,9 @@
 %global _hardened_build     1
 %endif
 
+# Set path to the package-notes linker script
+%global _package_note_file  %{_builddir}/%{name}-%{version}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
+
 # Define for release candidates
 #global rcrev   .rc0
 
@@ -1017,6 +1020,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Mon Jan 24 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-1
 - update to 2.35.0
+- set path to linker script in %%_package_note_file
 
 * Sat Jan 22 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-0.2.rc2.3
 - remove contrib/scalar to avoid cruft in git-core-doc

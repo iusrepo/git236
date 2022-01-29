@@ -83,7 +83,7 @@
 #global rcrev   .rc0
 
 Name:           git
-Version:        2.35.0
+Version:        2.35.1
 Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
@@ -1018,6 +1018,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Sat Jan 29 2022 Todd Zullinger <tmz@pobox.com> - 2.35.1-1
+- update to 2.35.1
+
 * Mon Jan 24 2022 Todd Zullinger <tmz@pobox.com> - 2.35.0-1
 - update to 2.35.0
 - set path to linker script in %%_package_note_file

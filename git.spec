@@ -76,15 +76,15 @@
 %global _hardened_build     1
 %endif
 
-# Set path to the package-notes linker script
-%global _package_note_file  %{_builddir}/%{name}-%{version}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
-
 # Define for release candidates
-#global rcrev   .rc0
+%global rcrev   .rc0
+
+# Set path to the package-notes linker script
+%global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git
-Version:        2.35.1
-Release:        1%{?rcrev}%{?dist}
+Version:        2.36.0
+Release:        0.0%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -116,12 +116,8 @@ Source99:       print-failed-test-output
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
 
-# Fix a few tests and issues with gnupg-2.3
-Patch1:         0001-t-lib-gpg-use-with-colons-when-parsing-gpgsm-output.patch
-Patch2:         0002-t-lib-gpg-reload-gpg-components-after-updating-trust.patch
-Patch3:         0003-t-lib-gpg-kill-all-gpg-components-not-just-gpg-agent.patch
-Patch4:         0004-t4202-match-gpgsm-output-from-GnuPG-2.3.patch
-Patch5:         0005-gpg-interface-match-SIG_CREATED-if-it-s-the-first-li.patch
+# https://lore.kernel.org/git/20220406184122.4126898-1-tmz@pobox.com/
+Patch1:         https://github.com/git/git/commit/f3ea4bed2.patch#/0001-doc-replace-with-litdd-in-credential-cache-fsmonitor.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -826,9 +822,9 @@ GIT_SKIP_TESTS=""
 #
 # The following 2 tests use run_with_limited_cmdline, which calls ulimit -s 128
 # to limit the maximum stack size.
-# t5541.35 'push 2000 tags over http'
+# t5541.36 'push 2000 tags over http'
 # t5551.25 'clone the 2,000 tag repo to check OS command line overflow'
-GIT_SKIP_TESTS="$GIT_SKIP_TESTS t5541.35 t5551.25"
+GIT_SKIP_TESTS="$GIT_SKIP_TESTS t5541.36 t5551.25"
 %endif
 # endif aarch64 %%{arm} %%{power64}
 
@@ -866,7 +862,7 @@ sed -i "s@\(GIT_TEST_OPTS='.*\)'@\1 --root=$testdir'@" GIT-BUILD-OPTIONS
 touch -r ts GIT-BUILD-OPTIONS
 
 # Run the tests
-%__make test || ./print-failed-test-output
+%__make -C t all || ./print-failed-test-output
 
 # Run contrib/credential/netrc tests
 mkdir -p contrib/credential
@@ -1018,6 +1014,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Tue Apr 05 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-0.0.rc0
+- update to 2.36.0-rc0
+
 * Sat Jan 29 2022 Todd Zullinger <tmz@pobox.com> - 2.35.1-1
 - update to 2.35.1
 

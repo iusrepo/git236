@@ -1,5 +1,6 @@
 expensive 2GB clone test; enable with GIT_TEST_CLONE_2GB=true
 filesystem does not corrupt utf-8
+fsmonitor--daemon is not supported on this platform
 GIT_SKIP_TESTS
 missing AUTOIDENT
 missing CASE_INSENSITIVE_FS
@@ -11,6 +12,7 @@ missing MINGW
 missing NATIVE_CRLF
 missing !PCRE
 missing !PTHREADS
+missing !REFFILES
 missing RFC1991
 missing RUNTIME_PREFIX
 missing SYMLINKS_WINDOWS

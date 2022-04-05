@@ -77,14 +77,14 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc0
+%global rcrev   .rc1
 
 # Set path to the package-notes linker script
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git
 Version:        2.36.0
-Release:        0.0%{?rcrev}%{?dist}
+Release:        0.1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -115,9 +115,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# https://lore.kernel.org/git/20220406184122.4126898-1-tmz@pobox.com/
-Patch1:         https://github.com/git/git/commit/f3ea4bed2.patch#/0001-doc-replace-with-litdd-in-credential-cache-fsmonitor.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1019,6 +1016,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Apr 08 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-0.1.rc1
+- update to 2.36.0-rc1
+
 * Tue Apr 05 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-0.0.rc0
 - update to 2.36.0-rc0
 - use httpd-core for tests on Fedora >= 37

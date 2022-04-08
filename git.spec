@@ -189,7 +189,7 @@ BuildRequires:  acl
 # Needed by t5540-http-push-webdav.sh
 BuildRequires: apr-util-bdb
 %endif
-# endif fedora >= 27
+# endif fedora or rhel >= 8
 BuildRequires:  bash
 %if %{with cvs}
 BuildRequires:  cvs
@@ -212,7 +212,12 @@ BuildRequires:  gnupg2-smime
 BuildRequires:  highlight
 %endif
 # endif fedora or el7+ (ppc64le/x86_64)
+%if 0%{?fedora} >= 37
+BuildRequires:  httpd-core
+%else
 BuildRequires:  httpd
+%endif
+# endif fedora >= 37
 %if 0%{?fedora} && ! ( 0%{?fedora} >= 35 || "%{_arch}" == "i386" || "%{_arch}" == "s390x" )
 BuildRequires:  jgit
 %endif
@@ -1016,6 +1021,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %changelog
 * Tue Apr 05 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-0.0.rc0
 - update to 2.36.0-rc0
+- use httpd-core for tests on Fedora >= 37
 
 * Sat Jan 29 2022 Todd Zullinger <tmz@pobox.com> - 2.35.1-1
 - update to 2.35.1

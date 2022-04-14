@@ -1,0 +1,88 @@
+From 0f85c4a30b072a26d74af8bbf63cc8f6a5dfc1b8 Mon Sep 17 00:00:00 2001
+From: Derrick Stolee <derrickstolee@github.com>
+Date: Wed, 13 Apr 2022 15:32:31 +0000
+Subject: [PATCH 3/3] setup: opt-out of check with safe.directory=*
+
+With the addition of the safe.directory in 8959555ce
+(setup_git_directory(): add an owner check for the top-level directory,
+2022-03-02) released in v2.35.2, we are receiving feedback from a
+variety of users about the feature.
+
+Some users have a very large list of shared repositories and find it
+cumbersome to add this config for every one of them.
+
+In a more difficult case, certain workflows involve running Git commands
+within containers. The container boundary prevents any global or system
+config from communicating `safe.directory` values from the host into the
+container. Further, the container almost always runs as a different user
+than the owner of the directory in the host.
+
+To simplify the reactions necessary for these users, extend the
+definition of the safe.directory config value to include a possible '*'
+value. This value implies that all directories are safe, providing a
+single setting to opt-out of this protection.
+
+Note that an empty assignment of safe.directory clears all previous
+values, and this is already the case with the "if (!value || !*value)"
+condition.
+
+Signed-off-by: Derrick Stolee <derrickstolee@github.com>
+Signed-off-by: Junio C Hamano <gitster@pobox.com>
+---
+ Documentation/config/safe.txt |  7 +++++++
+ setup.c                       |  6 ++++--
+ t/t0033-safe-directory.sh     | 10 ++++++++++
+ 3 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/config/safe.txt b/Documentation/config/safe.txt
+index 63597b2df8..6d764fe0cc 100644
+--- a/Documentation/config/safe.txt
++++ b/Documentation/config/safe.txt
+@@ -19,3 +19,10 @@ line option `-c safe.directory=<path>`.
+ The value of this setting is interpolated, i.e. `~/<path>` expands to a
+ path relative to the home directory and `%(prefix)/<path>` expands to a
+ path relative to Git's (runtime) prefix.
+++
++To completely opt-out of this security check, set `safe.directory` to the
++string `*`. This will allow all repositories to be treated as if their
++directory was listed in the `safe.directory` list. If `safe.directory=*`
++is set in system config and you want to re-enable this protection, then
++initialize your list with an empty value before listing the repositories
++that you deem safe.
+diff --git a/setup.c b/setup.c
+index 4b9f073617..aad9ace0af 100644
+--- a/setup.c
++++ b/setup.c
+@@ -1037,9 +1037,11 @@ static int safe_directory_cb(const char *key, const char *value, void *d)
+ 	if (strcmp(key, "safe.directory"))
+ 		return 0;
+ 
+-	if (!value || !*value)
++	if (!value || !*value) {
+ 		data->is_safe = 0;
+-	else {
++	} else if (!strcmp(value, "*")) {
++		data->is_safe = 1;
++	} else {
+ 		const char *interpolated = NULL;
+ 
+ 		if (!git_config_pathname(&interpolated, key, value) &&
+diff --git a/t/t0033-safe-directory.sh b/t/t0033-safe-directory.sh
+index 6f33c0dfef..239d93f4d2 100755
+--- a/t/t0033-safe-directory.sh
++++ b/t/t0033-safe-directory.sh
+@@ -36,4 +36,14 @@ test_expect_success 'safe.directory matches, but is reset' '
+ 	expect_rejected_dir
+ '
+ 
++test_expect_success 'safe.directory=*' '
++	git config --global --add safe.directory "*" &&
++	git status
++'
++
++test_expect_success 'safe.directory=*, but is reset' '
++	git config --global --add safe.directory "" &&
++	expect_rejected_dir
++'
++
+ test_done

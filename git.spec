@@ -77,14 +77,14 @@
 %endif
 
 # Define for release candidates
-%global rcrev   .rc2
+#global rcrev   .rc0
 
 # Set path to the package-notes linker script
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git
 Version:        2.36.0
-Release:        0.3%{?rcrev}%{?dist}
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -115,11 +115,6 @@ Source99:       print-failed-test-output
 
 # https://bugzilla.redhat.com/490602
 Patch0:         git-cvsimport-Ignore-cvsps-2.2b1-Branches-output.patch
-
-# Usability improvements on top of CVE-2022-24765
-Patch1:         0001-t0033-add-tests-for-safe.directory.patch
-Patch2:         0002-setup-fix-safe.directory-key-not-being-checked.patch
-Patch3:         0003-setup-opt-out-of-check-with-safe.directory.patch
 
 %if %{with docs}
 # pod2man is needed to build Git.3pm
@@ -1041,6 +1036,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon Apr 18 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-1
+- update to 2.36.0
+
 * Thu Apr 14 2022 Todd Zullinger <tmz@pobox.com> - 2.36.0-0.3.rc2
 - usability improvements on top of CVE-2022-24765
 

@@ -82,14 +82,14 @@
 # Set path to the package-notes linker script
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
-Name:           git
+Name:           git236
 Version:        2.36.1
-Release:        1%{?rcrev}%{?dist}
+Release:        2%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
-Source0:        https://www.kernel.org/pub/software/scm/git/%{?rcrev:testing/}%{name}-%{version}%{?rcrev}.tar.xz
-Source1:        https://www.kernel.org/pub/software/scm/git/%{?rcrev:testing/}%{name}-%{version}%{?rcrev}.tar.sign
+Source0:        https://www.kernel.org/pub/software/scm/git/%{?rcrev:testing/}git-%{version}%{?rcrev}.tar.xz
+Source1:        https://www.kernel.org/pub/software/scm/git/%{?rcrev:testing/}git-%{version}%{?rcrev}.tar.sign
 
 # Junio C Hamano's key is used to sign git releases, it can be found in the
 # junio-gpg-pub tag within git.
@@ -272,23 +272,10 @@ Requires:       emacs-filesystem >= %{_emacs_version}
 %endif
 # endif with emacs && defined _emacs_version
 
-# Obsolete emacs-git if it's disabled
-%if %{without emacs}
-Obsoletes:      emacs-git < %{?epoch:%{epoch}:}%{version}-%{release}
-%endif
-# endif without emacs
-
-# Obsolete git-cvs if it's disabled
-%if %{without cvs}
-Obsoletes:      git-cvs < %{?epoch:%{epoch}:}%{version}-%{release}
-%endif
-# endif without cvs
-
-# Obsolete git-p4 if it's disabled
-%if %{without p4}
-Obsoletes:      git-p4 < %{?epoch:%{epoch}:}%{version}-%{release}
-%endif
-# endif without p4
+# safe replacement
+Provides:       git = %{version}-%{release}
+Provides:       git%{?_isa} = %{version}-%{release}
+Conflicts:      git < %{version}-%{release}
 
 %description
 Git is a fast, scalable, distributed revision control system with an
@@ -327,6 +314,9 @@ Requires:       perl-Git = %{version}-%{release}
 Requires:       perl(Term::ReadKey)
 %endif
 # endif ! defined perl_bootstrap
+# safe replacement
+Provides:       git-all = %{version}-%{release}
+Conflicts:      git-all < %{version}-%{release}
 %description all
 Git is a fast, scalable, distributed revision control system with an
 unusually rich command set that provides both high-level operations
@@ -339,6 +329,10 @@ Summary:        Core package of git with minimal functionality
 Requires:       less
 Requires:       openssh-clients
 Requires:       zlib >= 1.2
+# safe replacement
+Provides:       git-core = %{version}-%{release}
+Provides:       git-core%{?_isa} = %{version}-%{release}
+Conflicts:      git-core < %{version}-%{release}
 %description core
 Git is a fast, scalable, distributed revision control system with an
 unusually rich command set that provides both high-level operations
@@ -353,6 +347,9 @@ other SCMs, install the git-all meta-package.
 Summary:        Documentation files for git-core
 BuildArch:      noarch
 Requires:       git-core = %{version}-%{release}
+# safe replacement
+Provides:       git-core-doc = %{version}-%{release}
+Conflicts:      git-core-doc < %{version}-%{release}
 %description core-doc
 Documentation files for git-core package including man pages.
 
@@ -361,6 +358,10 @@ Documentation files for git-core package including man pages.
 Summary:        Git helper for accessing credentials via libsecret
 BuildRequires:  libsecret-devel
 Requires:       git = %{version}-%{release}
+# safe replacement
+Provides:       git-credential-libsecret = %{version}-%{release}
+Provides:       git-credential-libsecret%{?_isa} = %{version}-%{release}
+Conflicts:      git-credential-libsecret < %{version}-%{release}
 %description credential-libsecret
 %{summary}.
 %endif
@@ -374,6 +375,9 @@ Requires:       git = %{version}-%{release}
 Requires:       cvs
 Requires:       cvsps
 Requires:       perl(DBD::SQLite)
+# safe replacement
+Provides:       git-cvs = %{version}-%{release}
+Conflicts:      git-cvs < %{version}-%{release}
 %description cvs
 %{summary}.
 %endif
@@ -386,6 +390,10 @@ Requires:       systemd
 Requires(post): systemd
 Requires(preun):  systemd
 Requires(postun): systemd
+# safe replacement
+Provides:       git-daemon = %{version}-%{release}
+Provides:       git-daemon%{?_isa} = %{version}-%{release}
+Conflicts:      git-daemon < %{version}-%{release}
 %description daemon
 The git daemon for supporting git:// access to git repositories
 
@@ -411,23 +419,32 @@ Requires:       perl(Sys::Hostname)
 Requires:       perl(Term::ANSIColor)
 Requires:       perl(Term::ReadLine)
 Requires:       perl(Text::ParseWords)
+# safe replacement
+Provides:       git-email = %{version}-%{release}
+Conflicts:      git-email < %{version}-%{release}
 %description email
 %{summary}.
 
-%package -n gitk
+%package gitk
 Summary:        Git repository browser
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 Requires:       git-gui = %{version}-%{release}
 Requires:       tk >= 8.4
-%description -n gitk
+# safe replacement
+Provides:       gitk = %{version}-%{release}
+Conflicts:      gitk < %{version}-%{release}
+%description gitk
 %{summary}.
 
-%package -n gitweb
+%package gitweb
 Summary:        Simple web interface to git repositories
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
-%description -n gitweb
+# safe replacement
+Provides:       gitweb = %{version}-%{release}
+Conflicts:      gitweb < %{version}-%{release}
+%description gitweb
 %{summary}.
 
 %package gui
@@ -435,6 +452,9 @@ Summary:        Graphical interface to Git
 BuildArch:      noarch
 Requires:       gitk = %{version}-%{release}
 Requires:       tk >= 8.4
+# safe replacement
+Provides:       git-gui = %{version}-%{release}
+Conflicts:      git-gui < %{version}-%{release}
 %description gui
 %{summary}.
 
@@ -448,6 +468,9 @@ Requires:       httpd
 %else
 Requires:       lighttpd
 %endif
+# safe replacement
+Provides:       git-instaweb = %{version}-%{release}
+Conflicts:      git-instaweb < %{version}-%{release}
 
 %description instaweb
 A simple script to set up gitweb and a web server for browsing the local
@@ -467,30 +490,43 @@ BuildRequires:  python2-devel
 %endif
 # endif with python3
 Requires:       git = %{version}-%{release}
+# safe replacement
+Provides:       git-p4 = %{version}-%{release}
+Conflicts:      git-p4 < %{version}-%{release}
 %description p4
 %{summary}.
 %endif
 # endif with p4
 
-%package -n perl-Git
+%package perl-Git
 Summary:        Perl interface to Git
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%description -n perl-Git
+# safe replacement
+Provides:       perl-Git = %{version}-%{release}
+Conflicts:      perl-Git < %{version}-%{release}
+%description perl-Git
 %{summary}.
 
-%package -n perl-Git-SVN
+%package perl-Git-SVN
 Summary:        Perl interface to Git::SVN
 BuildArch:      noarch
 Requires:       git = %{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%description -n perl-Git-SVN
+# safe replacement
+Provides:       perl-Git-SVN = %{version}-%{release}
+Conflicts:      perl-Git-SVN < %{version}-%{release}
+%description perl-Git-SVN
 %{summary}.
 
 %package subtree
 Summary:        Git tools to merge and split repositories
 Requires:       git-core = %{version}-%{release}
+# safe replacement
+Provides:       git-subtree = %{version}-%{release}
+Provides:       git-subtree%{?_isa} = %{version}-%{release}
+Conflicts:      git-subtree < %{version}-%{release}
 %description subtree
 Git subtrees allow subprojects to be included within a subdirectory
 of the main project, optionally including the subproject's entire
@@ -506,6 +542,9 @@ Requires:       perl(Term::ReadKey)
 %endif
 # endif ! defined perl_bootstrap
 Requires:       subversion
+# safe replacement
+Provides:       git-svn = %{version}-%{release}
+Conflicts:      git-svn < %{version}-%{release}
 %description svn
 %{summary}.
 
@@ -513,7 +552,7 @@ Requires:       subversion
 # Verify GPG signatures
 xz -dc '%{SOURCE0}' | %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data=-
 
-%autosetup -p1 -n %{name}-%{version}%{?rcrev}
+%autosetup -p1 -n git-%{version}%{?rcrev}
 
 # Install print-failed-test-output script
 install -p -m 755 %{SOURCE99} print-failed-test-output
@@ -752,8 +791,8 @@ fi
 popd >/dev/null
 
 # find translations
-%find_lang %{name} %{name}.lang
-cat %{name}.lang >> bin-man-doc-files
+%find_lang git git.lang
+cat git.lang >> bin-man-doc-files
 
 # quiet some rpmlint complaints
 chmod -R g-w %{buildroot}
@@ -871,9 +910,9 @@ export LANG=en_US.UTF-8
 #   git grep 'test_bool_env GIT_' -- t/{lib-,t[0-9]}*.sh |
 #       sed -r 's/.* (GIT_[^ ]+) .*/\1/g' | sort -u
 export GIT_TEST_GIT_DAEMON=true
-export GIT_TEST_HTTPD=true
+export GIT_TEST_HTTPD=false
 export GIT_TEST_SVNSERVE=true
-export GIT_TEST_SVN_HTTPD=true
+export GIT_TEST_SVN_HTTPD=false
 
 # Create tmpdir for test output and update GIT_TEST_OPTS
 # Also update GIT-BUILD-OPTIONS to keep make from any needless rebuilding
@@ -973,14 +1012,14 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_mandir}/man1/*email*.1*}
 %{?with_docs:%{_pkgdocdir}/*email*.html}
 
-%files -n gitk
+%files gitk
 %{_pkgdocdir}/*gitk*.txt
 %{_bindir}/*gitk*
 %{_datadir}/gitk
 %{?with_docs:%{_mandir}/man1/*gitk*.1*}
 %{?with_docs:%{_pkgdocdir}/*gitk*.html}
 
-%files -n gitweb
+%files gitweb
 %{_pkgdocdir}/*.gitweb
 %{_pkgdocdir}/gitweb*.txt
 %{?with_docs:%{_mandir}/man1/gitweb.1*}
@@ -1018,10 +1057,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %endif
 # endif with p4
 
-%files -n perl-Git -f perl-git-files
+%files perl-Git -f perl-git-files
 %{?with_docs:%{_mandir}/man3/Git.3pm*}
 
-%files -n perl-Git-SVN -f perl-git-svn-files
+%files perl-Git-SVN -f perl-git-svn-files
 
 %files subtree
 %{gitexecdir}/git-subtree
@@ -1036,6 +1075,9 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Mon May 09 2022 Carl George <carl@george.computer> - 2.36.1-2
+- Port from Fedora to IUS
+
 * Fri May 06 2022 Todd Zullinger <tmz@pobox.com> - 2.36.1-1
 - update to 2.36.1
 

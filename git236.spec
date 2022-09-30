@@ -83,8 +83,8 @@
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git236
-Version:        2.36.1
-Release:        2%{?rcrev}%{?dist}
+Version:        2.36.2
+Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
 URL:            https://git-scm.com/
@@ -1075,6 +1075,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Sep 30 2022 Carl George <carl@george.computer> - 2.36.2-1
+- Update to version 2.36.2
+- Fixes CVE-2022-29187
+
 * Mon May 09 2022 Carl George <carl@george.computer> - 2.36.1-2
 - Port from Fedora to IUS
 

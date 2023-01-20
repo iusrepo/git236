@@ -1075,7 +1075,7 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
-* Tue Jan 20 2023 Danilo Braband <dbraband@gmail.com> - 2.36.4-1
+* Fri Jan 20 2023 Danilo Braband <dbraband@gmail.com> - 2.36.4-1
 - Update to version 2.36.4
 - Fixes CVE-2022-23521 and CVE-2022-41903
 

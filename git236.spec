@@ -83,7 +83,7 @@
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git236
-Version:        2.36.3
+Version:        2.36.4
 Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
@@ -1075,6 +1075,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Fri Jan 20 2023 Danilo Braband <dbraband@gmail.com> - 2.36.4-1
+- Update to version 2.36.4
+- Fixes CVE-2022-23521 and CVE-2022-41903
+
 * Tue Nov 22 2022 Jeff Sheltren <jeff@tag1consulting.com> - 2.36.3-1
 - Update to version 2.36.3
 - Fixes CVE-2022-39253 and CVE-2022-39260

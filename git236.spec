@@ -83,7 +83,7 @@
 %global _package_note_file  %{_builddir}/%{name}-%{version}%{?rcrev}/.package_note-%{name}-%{version}-%{release}.%{_arch}.ld
 
 Name:           git236
-Version:        2.36.4
+Version:        2.36.5
 Release:        1%{?rcrev}%{?dist}
 Summary:        Fast Version Control System
 License:        GPLv2
@@ -1075,6 +1075,10 @@ rmdir --ignore-fail-on-non-empty "$testdir"
 %{?with_docs:%{_pkgdocdir}/git-svn.html}
 
 %changelog
+* Wed Feb 15 2023 Danilo Braband <dbraband@gmail.com> - 2.36.5-1
+- Update to version 2.36.5
+- Fixes CVE-2023-23946 and CVE-2023-22490
+
 * Fri Jan 20 2023 Danilo Braband <dbraband@gmail.com> - 2.36.4-1
 - Update to version 2.36.4
 - Fixes CVE-2022-23521 and CVE-2022-41903
